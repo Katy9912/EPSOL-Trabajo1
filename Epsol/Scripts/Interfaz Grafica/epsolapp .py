@@ -1,14 +1,20 @@
 '''Autor: Carlos Ramirez Rendon, Erick Rodriguez Orduña
 Para: EPSOL SA de CV
 Program: Prosessing data and visualization for a SEL Device'''
+
 from Epsolapp_main_window import *
 from epsol_window2 import *
+
+#Se importa la ventana "Graficas_menu"
+from Graficas_menu import *
+
 from Data import *
 import pandas as pd
 import os
 
-#Declaración de la clase principal, EPSOLAPP que ocntiene la ventana inicial
+#Declaración de la clase principal, EPSOLAPP que contiene la ventana inicial
 class EpsolApp(QtWidgets.QMainWindow):
+    
     #Inicializacion de los componentes de la Interfaz Gráfica
     def __init__(self):
         super().__init__()
@@ -16,12 +22,18 @@ class EpsolApp(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
 
         self.files = None
-        self.initial_dir = "../"
+        self.initial_dir = "../EPSOL_APP/Scripts/ErickXD"
         self.pd = None
+        
 
         self.second = GraphicsWindow(init_dir=self.initial_dir)
+        
+        #Referencia a objeto de clase GraficsMenu
+        self.third = GraphicsMenu()
 
-        self.ui.graphic_button.clicked.connect(self.open)
+        #Se modifica la conexión de graphics_button para llamar a la nueva ventana
+        self.ui.graphic_button.clicked.connect(self.menu)
+        
         self.ui.load_file_button.clicked.connect(self.loadfiles)
         self.ui.menuHelp.triggered.connect(self.winfo)
 
@@ -34,7 +46,8 @@ class EpsolApp(QtWidgets.QMainWindow):
             data = Graphic_Data()
             self.pd = data.merge(self.files[0])
 
-    def open(self):
+    #Este método no esta en uso porque se está usando el método menu
+    '''def open(self):
 
         if self.files:
             if self.files[0]:
@@ -44,7 +57,20 @@ class EpsolApp(QtWidgets.QMainWindow):
             else:
                 self.warninfo()
         else:
+            self.warninfo()'''
+
+    def menu (self):
+        if self.files:
+            if self.files[0]:
+                self.second.pd = self.pd
+                self.third.show()
+
+            else:
+                self.warninfo()
+        else:
             self.warninfo()
+
+        
 
     def warninfo(self):
         QMessageBox.warning(self, "Advertencia!", "No existen archivos cargados", buttons=QMessageBox.Ok)
@@ -58,6 +84,7 @@ class EpsolApp(QtWidgets.QMainWindow):
     def closeEvent(self, event):
         if event:
             self.second.close()
+
 
 #Clase de la ventana secundaria, usada para la visualización de las gráficas
 class GraphicsWindow(QtWidgets.QMainWindow):
@@ -89,6 +116,7 @@ class GraphicsWindow(QtWidgets.QMainWindow):
         plot_file = os.path.join("file:///" + self.dir, plot_name)
         self.web.load(QUrl(plot_file))
         self.web.show()
+
     #Funcion que elimina los archivos .html generados al hacer las graficas, para limpiar memoria
     def closeEvent(self, event):
         if event:
@@ -96,6 +124,13 @@ class GraphicsWindow(QtWidgets.QMainWindow):
                 for file in self.plot_list:
                     os.remove(file)
                     self.plot_list.remove(file)
+
+# Clase de la venta del menu de gráficas
+class GraphicsMenu(QtWidgets.QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.ui = Ui_graphics_menu()
+        self.ui.setupUi(self)
 
 
 if __name__ == "__main__":
