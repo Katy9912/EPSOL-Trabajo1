@@ -77,7 +77,7 @@ class Ui_comparation_options(object):
 
     def retranslateUi(self, comparation_options):
         _translate = QtCore.QCoreApplication.translate
-        comparation_options.setWindowTitle(_translate("comparation_options", "Dialog"))
+        comparation_options.setWindowTitle(_translate("comparation_options", "EPSOL Soluciones en Sistemas de Potencia y EnergíaSA de CV"))
         self.titte_label.setText(_translate("comparation_options", "Comparación de Variables"))
         self.variable_1_label.setText(_translate("comparation_options", "Variable 1"))
         self.variable_2_label.setText(_translate("comparation_options", "Variable 2"))

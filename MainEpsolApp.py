@@ -2,6 +2,8 @@
 import pandas as pd
 import numpy as np
 import os
+
+from datetime import datetime
 import csv
 
 #Se importa el .py de las interfaces gráficas
@@ -19,7 +21,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_root()
         self.ui.setupUi(self)
-        
+        self.show()
         #Variable que almacenará los archivos a utilizar en el programa
         self.files = None
         #Path del folder inicial
@@ -34,7 +36,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.ui.graphic_button.clicked.connect(self.availableGraphics)
         self.ui.report_button.clicked.connect(self.generateReport)
         self.ui.menuHelp.triggered.connect(self.info)
-        self.show()
+        
 
     #Declaracion de métodos relacionados a los botones de la interfaz principal
 
@@ -48,10 +50,18 @@ class MainEpsolApp (QtWidgets.QMainWindow):
 
     #Metodo que descarga el csv de la informacion procesada
     def download(self):
-        print(self.data)
-        self.download = pd.DataFrame(self.data)
-        self.download.to_csv('numeros2.csv', header=True, index=False)
 
+        if self.data is None:
+            self.warning()
+        else:
+            self.download = pd.DataFrame(self.data)
+            self.nombre = datetime.now().strftime('Dataframe_usado__%H_%M_%d_%m_%Y.csv')
+            self.download.to_csv(str(self.nombre), header=True, index=False)
+            self.nota = "Descarga de reporte CSV completa!" 
+            self.information(anuncio=self.nota)
+            
+            
+            
 
     #Metodo que muestra el menu de las gráficas disponibles
     def availableGraphics(self):
@@ -63,7 +73,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                 self.menu.cargarData(data=self.data)
                 #Se establecen las opciones de gráficas que estan disponibles
                 #A partir de los archivos cargados
-                self.menu.activarOpciones()
+                self.menu.comparar()
                 #Se muestra interfaz
                 self.menu.show()
                
@@ -78,6 +88,10 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     def generateReport(self):
         print("")
     
+    def closeEvent(self, event):
+        if event:
+            self.menu.close()
+
     #Metodo que miestra información de desarrollo
     def info(self):
         QMessageBox.about(self, "Informacion del programa",
@@ -88,6 +102,10 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     def warning(self):
         QMessageBox.warning(self, "Advertencia!", "No existen archivos cargados", buttons=QMessageBox.Ok)
 
+    def information(self, anuncio):
+        aviso = anuncio
+        QMessageBox.information(self, "Aviso!",
+                                        str(aviso))
 
 #Main
 if __name__ == "__main__":

@@ -2,12 +2,15 @@
 import pandas as pd
 import numpy as np
 import os
+from PyQt5.QtWidgets import *
+from PyQt5 import QtWidgets
 
 # Se importa el .py de la interfaz gráfica
-from Scripts.App_V2.Graphics_menu import *
+from Scripts.App_V2.Graficas_menu import *
 
 from Scripts.App_V2.GraphicsComparison import *
 from Scripts.App_V2.Graphic_Data import *
+from Scripts.App_V2.GraphicsView import *
 
 
 class GraphicsMenu(QtWidgets.QMainWindow):
@@ -16,43 +19,28 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.ui = Ui_graphics_menu()
         self.ui.setupUi(self)
         self.show()
-        
+
+        self.botones = ['PF','HRMA_y','HRMB_y','HRMC_y','I','I0_B','PLTA','PSTA','V','W']
         #Estructura que recibe los datos del dataframe
         self.info = None
         #Lista para almacenar los headers del dataframe
         self.headers = [None]
-        #Diccionario para almacenar la estructura de mediciones
-        self.diccionario = {None} 
-        #Lista para almacenar las "keys" provenientes del diccionario
-        self.keys = [None]
         #Lista que guarda todas las variables de las categorias existentes
         self.variables = []
 
         # Listeners de los botones de la interfaz
-        '''self.ui.energy_Q_button.clicked.connect()
-        self.ui.harmonics_button.clicked.connect()
-        self.ui.potency_button.clicked.connect()
-        self.ui.potency_factor_button.clicked.connect()
-        self.ui.thd_button.clicked.connect()
-        self.ui.energy_U_button.clicked.connect()
-        self.ui.energy_VAR_button.clicked.connect()
-        self.ui.energy_W_button.clicked.connect()
-        self.ui.voltage_button.clicked.connect()
-        self.ui.voltage_history_button.clicked.connect()
-        self.ui.voltage_unbalance_button.clicked.connect()
-        self.ui.current_angle_button.clicked.connect()
-        self.ui.current_button.clicked.connect()
-        self.ui.current_history_button.clicked.connect()
-        self.ui.current_magnitude_button.clicked.connect()
-        self.ui.current_unbalance_button.clicked.connect()
-        self.ui.frecuency_button.clicked.connect()
-        self.ui.harmonic_distortion_button.clicked.connect()
-        self.ui.k_factor_button.clicked.connect()
-        self.ui.potency_distortion_factor_button.clicked.connect()
-        self.ui.potency_history_buttonclicked.connect()
-        self.ui.flicker_button.clicked.connect()'''
-        self.ui.custom_button.clicked.connect(self.custom)
+        self.ui.PF.clicked.connect(self.graficar)
+        self.ui.HRMA_y.clicked.connect(self.graficar)
+        self.ui.HRMB_y.clicked.connect(self.graficar)
+        self.ui.HRMC_y.clicked.connect(self.graficar)
+        self.ui.I.clicked.connect(self.graficar)
+        self.ui.I0_B.clicked.connect(self.graficar)
+        self.ui.PLTA.clicked.connect(self.graficar)
+        self.ui.PSTA.clicked.connect(self.graficar)
+        self.ui.V.clicked.connect(self.graficar)
+        self.ui.W.clicked.connect(self.graficar)
 
+        
         
         
 
@@ -64,81 +52,72 @@ class GraphicsMenu(QtWidgets.QMainWindow):
     # Metodo para obtener los headers de las columnas del dataframe
     def recuperarColumnas(self):
         self.headers = self.info.columns.tolist()
+        print ("headers")
+        print(self.headers)
 
-    def obtenerParaComparar(self):
-        self.graphicData = Graphic_Data()
-        self.diccionario = self.graphicData.mediciones_dict
-        
-    def activarOpciones(self):
-        #Se recuperan los headers del dataframe generado
+    
+    
+    def comparar(self):
         self.recuperarColumnas()
-        #Se obtiene el diccionario de variables
-        self.obtenerParaComparar()
-        #Se obtiene la lista de las llaves del diccionario
-        self.keys = list(self.diccionario.keys())
-        #Se inicializa contador
-        found = 0
-        #Se recorre el diccionario
-        for key in self.diccionario:
-            #Se obtiene la lista de los valores relacionados con la "key" actual
-            values = list(self.diccionario[key])
-            #Se obtiene el numero de valores relacionados a la "key" actual
-            elements = len(values)
-            #Se recorre la lista de valores 
-            for item in values:
-                #Se compara si los elementos de la lista "values" están en la lista de "headers"
-                if item in self.headers:
-                    #Se lleva la cuenta de elementos encontrados en los "headers"
-                    found += 1
-                    self.variables.append(item)
-            #Si no se encuentran todas las variables todas las variables relacionadas con la "key" actual en "headers"       
-            if found == elements:
-                #Se remueve la llave de la lista "keys"
-                self.keys.remove(key)
-            #Se reinicia contador de elementos encontrados
-            found = 0
-        print(self.variables)
-        self.categoriasDeshabilitadas()
 
-    def categoriasDeshabilitadas(self):
-        for value in self.keys:
+        for key in self.botones:
+            if key in self.headers:
+                self.variables.append(key)
+        self.categoriasHabilitadas()
+
+    def categoriasHabilitadas(self):
+        for value in self.variables:
             if value == "PF":
-                self.ui.potency_factor_button.setStyleSheet("background-color: gray")
-                self.ui.potency_factor_button.setEnabled(False)
-            if value == "HRMA" or "HRMB" or "HRMC":
-                self.ui.harmonics_button.setStyleSheet("background-color: gray")
-                self.ui.harmonics_button.setEnabled(False)
-            if value == "Voltages":
-                self.ui.voltage_button.setStyleSheet("background-color: gray")
-                self.ui.voltage_button.setEnabled(False)
-            if value == "Freq":
-                self.ui.frecuency_button.setStyleSheet("background-color: gray")
-                self.ui.frecuency_button.setEnabled(False)
-            if value == "Power":
-                self.ui.energy_Q_button.setStyleSheet("background-color: gray")
-                self.ui.energy_Q_button.setEnabled(False)
-                self.ui.energy_U_button.setStyleSheet("background-color: gray")
-                self.ui.energy_U_button.setEnabled(False)
-                self.ui.energy_W_button.setStyleSheet("background-color: gray")
-                self.ui.energy_W_button.setEnabled(False)
-            if value == "Current":
-                self.ui.current_button.setStyleSheet("background-color: gray")
-                self.ui.current_button.setEnabled(False)
-            if value == "LT_Flicker" or "ST_Flicker":
-                self.ui.flicker_button.setStyleSheet("background-color: gray")
-                self.ui.flicker_button.setEnabled(False)
-            if value == "Desvalance":
-                self.ui.current_unbalance_button.setStyleSheet("background-color: gray")
-                self.ui.current_unbalance_button.setEnabled(False)
-            if value == "Angulo":
-                self.ui.current_angle_button.setStyleSheet("background-color: gray")
-                self.ui.current_angle_button.setEnabled(False)
+                self.ui.PF.setStyleSheet("border-color: black")
+                self.ui.PF.setEnabled(True)
+            if value == "HRMA_y":
+                self.ui.HRMA_y.setStyleSheet("border-color: black")
+                self.ui.HRMA_y.setEnabled(True)
+            if value =="HRMB_y":
+                self.ui.HRMB_y.setStyleSheet("border-color: black")
+                self.ui.HRMB_y.setEnabled(True)
+            if value == "HRMC_y":
+                self.ui.HRMC_y.setStyleSheet("border-color: black")
+                self.ui.HRMC_y.setEnabled(True)
+            if value == "V":
+                self.ui.V.setStyleSheet("border-color: black")
+                self.ui.V.setEnabled(True)
+            if value == "W":
+                self.ui.W.setStyleSheet("border-color: black")
+                self.ui.W.setEnabled(True)
+            if value == "I":
+                self.ui.I.setStyleSheet("border-color: black")
+                self.ui.I.setEnabled(True)
+            if value == "PSTA":
+                self.ui.PSTA.setStyleSheet("border-color: black")
+                self.ui.PSTA.setEnabled(True)
+            if value == "PLTA":
+                self.ui.PLTA.setStyleSheet("border-color: black")
+                self.ui.PLTA.setEnabled(True)
+            if value == "I0_B":
+                self.ui.I0_B.setStyleSheet()
+                self.ui.I0_B.setEnabled(True)
+            
 
-    def custom(self):
+    #Metodo no operativo.... Se requiere verificar que se puedan graficar disntintas
+    #variables
+    '''def custom(self):
         self.custom = GraphicsComparison()
-        self.values = list(self.diccionario.values())
         self.custom.setVariables(variables=self.values)
-        self.custom.show()
+        self.custom.show()'''
+    
+    
+    def graficar(self):
+        self.view = GraphicsView()
+        self.view.setData(datos=self.info)
+        self.view.setName(name=self.sender().objectName())
+        self.view.plotitem()
+        self.view.show()
+
+    def closeEvent(self, event):
+        if event:
+            self.view.close()
+
 
         
 

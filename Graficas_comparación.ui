@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>EPSOL Soluciones en Sistemas de Potencia y EnergíaSA de CV</string>
   </property>
   <widget class="QComboBox" name="list_1">
    <property name="geometry">

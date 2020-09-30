@@ -93,6 +93,9 @@ QPushButton:pressed {
     <property name="toolTip">
      <string>Carga los archivos .csv</string>
     </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
     <property name="text">
      <string>Cargar Archivos</string>
     </property>
@@ -183,25 +186,6 @@ QPushButton:pressed {
     </property>
     <property name="text">
      <string/>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>140</y>
-      <width>201</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-      <pointsize>10</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Nota: Solo son Aceptados los datos&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;del Equipo SEL735 y exportados&lt;/p&gt;&lt;p align=&quot;center&quot;&gt;desde Quickset en formato CSV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
