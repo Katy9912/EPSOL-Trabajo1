@@ -10,7 +10,6 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-from Scripts.App_V2.Epsol_Logo_rc import *
 
 class Ui_root(object):
     def setupUi(self, root):
@@ -64,6 +63,7 @@ class Ui_root(object):
         font.setFamily("Arial")
         self.load_file_button.setFont(font)
         self.load_file_button.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.load_file_button.setStyleSheet("")
         self.load_file_button.setObjectName("load_file_button")
         self.download_file_button = QtWidgets.QPushButton(self.centralwidget)
         self.download_file_button.setGeometry(QtCore.QRect(320, 220, 190, 40))
@@ -92,13 +92,6 @@ class Ui_root(object):
         self.logo_label.setStyleSheet("border-image: url(:/EPSOL/LogoEpsolCMYK.png);")
         self.logo_label.setText("")
         self.logo_label.setObjectName("logo_label")
-        self.label = QtWidgets.QLabel(self.centralwidget)
-        self.label.setGeometry(QtCore.QRect(530, 140, 201, 91))
-        font = QtGui.QFont()
-        font.setFamily("Arial")
-        font.setPointSize(10)
-        self.label.setFont(font)
-        self.label.setObjectName("label")
         root.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(root)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 21))
@@ -128,7 +121,16 @@ class Ui_root(object):
         self.graphic_button.setText(_translate("root", "Graficar"))
         self.report_button.setToolTip(_translate("root", "Genera reporte en word"))
         self.report_button.setText(_translate("root", "Generar Reporte Word"))
-        self.label.setText(_translate("root", "<html><head/><body><p align=\"center\">Nota: Solo son Aceptados los datos</p><p align=\"center\">del Equipo SEL735 y exportados</p><p align=\"center\">desde Quickset en formato CSV</p></body></html>"))
         self.menuHelp.setTitle(_translate("root", "Help"))
         self.actionAbout.setText(_translate("root", "About"))
+import Epsol_Logo_rc
 
+
+if __name__ == "__main__":
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    root = QtWidgets.QMainWindow()
+    ui = Ui_root()
+    ui.setupUi(root)
+    root.show()
+    sys.exit(app.exec_())

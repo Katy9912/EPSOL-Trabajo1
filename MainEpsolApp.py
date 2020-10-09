@@ -1,26 +1,33 @@
-#Se importan las librerias requeridas para la ejecuciÃ³n de la clase
+#Se importan las librerias requeridas para la ejecución de la clase
 import pandas as pd
 import numpy as np
 import os
-import docx
-from docx import Document
 
 from datetime import datetime
 import csv
 
-from Main_Window import *
+#Se importa el .py de las interfaces gráficas
+from Scripts.App_V2.Main_Window import *
 
-from GraphicsMenu import *
-from Graphic_Data import *
 
+#Se declara el .py de la clase de la ventana a utilizar
+# y de la clase que procesa la información
+from Scripts.App_V2.GraphicsMenu import *
+from Scripts.App_V2.Graphic_Data import *
+
+#Clase de la pantalla principal
 class MainEpsolApp (QtWidgets.QMainWindow):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, parent=None):
+        super(MainEpsolApp,self).__init__(parent)
         self.ui = Ui_root()
         self.ui.setupUi(self)
-        self.show()        
+        self.show()
+        
+        #Variable que almacenará los archivos a utilizar en el programa
         self.files = None
-        self.initial_dir = "../"        
+        #Path del folder inicial
+        self.initial_dir = "../"
+        # Variable que almacenará el merge de los archivos cargados
         self.data = None
 
         
@@ -28,21 +35,24 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.ui.load_file_button.clicked.connect(self.loadFiles)
         self.ui.download_file_button.clicked.connect(self.download)
         self.ui.graphic_button.clicked.connect(self.availableGraphics)
-        self.ui.report_button.clicked.connect(self.word)
-        #self.ui.report_button.clicked.connect(self.word)
+        self.ui.report_button.clicked.connect(self.generateReport)
         self.ui.menuHelp.triggered.connect(self.info)
         
 
-    #Declaracion de mÃ©todos relacionados a los botones de la interfaz principal
+    #Declaracion de métodos relacionados a los botones de la interfaz principal
 
-    #MÃ©todo para cargar los datos a procesas   
+    #Método para cargar los datos a procesas   
     def loadFiles(self):
         self.files = QFileDialog.getOpenFileNames(self, "Abrir Archivos", self.initial_dir, "CSV Files (*.csv)") 
         if self.files[0]:
             graph = Graphic_Data()
             self.data = graph.merge(self.files[0])
+            
 
-      #Metodo que descarga el csv de la informacion procesada
+    #Metodo que descarga el csv de la informacion procesada
+    #NECESITA CODIGO
+    '''Lo que esta dentro de este metodo es para generar un CSV. Aqui
+    hay que hacer la limpieza del dataframe para eliminar las columnas'''
     def download(self):
 
         if self.data is None:
@@ -51,74 +61,54 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             self.download = pd.DataFrame(self.data)
             self.nombre = datetime.now().strftime('Dataframe_usado__%H_%M_%d_%m_%Y.csv')
             self.download.to_csv(str(self.nombre), header=True, index=False)
-            self.nota = "Descarga de reporte CSV completa" 
+            self.nota = "Descarga de reporte CSV completa!" 
             self.information(anuncio=self.nota)
             
             
-    def word(self):
-        
-        
-        path = './Imagenes'       
-        lstFiles = []        
-        lstDir = os.walk(path)        
- 
-        for root, dirs, files in lstDir:
-            for fichero in files:
-                (nombreFichero, extension) = os.path.splitext(fichero)
-                if(extension == ".png"):
-                    lstFiles.append(nombreFichero+extension)
-        for f in lstFiles:            
-            try:
-                doc = docx.Document('test.docx')
-                #doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(10), height=docx.shared.Cm(5))
-                doc.add_picture(str(path+'\\'+f))
-                doc.save('test.docx')
-            except Exception as e: 
-    
-                print(e,"Generando archivo .docx")            
-                document = Document()
-                document.save('test.docx')
-                doc = docx.Document('test.docx')
-                doc.add_picture(str(path+'\\'+f))
-                
-                doc.save('test.docx')    
-        print("Archivo finalizado")        
+            
 
+    #Metodo que muestra el menu de las gráficas disponibles
     def availableGraphics(self):
         if self.files:
             if self.files[0]:
                 #Se crea una instancia de GraphicsMenu
-                self.menu = GraphicsMenu()
+                self.menu = GraphicsMenu(parent=self)
                 #Se manda el merge que se genera con los datos cargados
                 self.menu.cargarData(data=self.data)
-                #Se establecen las opciones de grÃ¡ficas que estan disponibles
+                #Se establecen las opciones de gráficas que estan disponibles
                 #A partir de los archivos cargados
                 self.menu.comparar()
                 #Se muestra interfaz
                 self.menu.show()
                
             else:
-                #Se muestra seÃ±al de emergencia
+                #Se muestra señal de emergencia
                 self.warning()
         else:
-            #Se muestra seÃ±al de emergencia
+            #Se muestra señal de emergencia
             self.warning()
     
+    #Metodo que genera el reporte de gráficas
+    #NECESITA CODIGO
+    def generateReport(self):
+        print("")
+    
 
-    def closeEvent(self, event):
-        if event:
-            self.menu.close()
-
-    #Metodo que miestra informaciÃ³n de desarrollo
+    #Metodo que miestra información de desarrollo
     def info(self):
         QMessageBox.about(self, "Informacion del programa",
-                          "Programa DiseÃ±ado por:\nErick Rodriguez OrduÃ±a y\nCarlos " +
-                          "Ramirez Rendon" + "\nPara: EPSOL SA de CV")
+                          "Programa Diseñado por:\nErick Rodriguez Orduña, \nCarlos " +
+                          "Ramirez Rendon, \nNatalia Bonifaz "+
+                          "Oviedo, \nMaría Juliana " +
+                          "Pérez Barón, \nKatia Patricia " +
+                          "Limon Fraga y \nJosé Emmanuel " + 
+                          "De Los Santos Castro \nPara: EPSOL SA de CV")
 
     #Metodo que muestra el mensaje de advertencia sobre datos inexistentes
     def warning(self):
         QMessageBox.warning(self, "Advertencia!", "No existen archivos cargados", buttons=QMessageBox.Ok)
 
+    #Metodo que muestra el mensaje de aviso si se descarga el csv o se genera el word
     def information(self, anuncio):
         aviso = anuncio
         QMessageBox.information(self, "Aviso!",
@@ -132,7 +122,6 @@ if __name__ == "__main__":
     from PyQt5.QtWidgets import *
     from PyQt5 import QtWidgets
     from PyQt5.QtCore import *
-
 
     app = QtWidgets.QApplication(sys.argv)
     my_app = MainEpsolApp()

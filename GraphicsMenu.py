@@ -14,19 +14,31 @@ from Scripts.App_V2.GraphicsView import *
 
 
 class GraphicsMenu(QtWidgets.QMainWindow):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,parent):
+        super(GraphicsMenu,self).__init__()
+
+        #Esta variable guarda referencia a la interfaz "parent" de esta interfaz
+        # Es necesaria para la interaccion de los botones 
+        self.parent = parent
+
         self.ui = Ui_graphics_menu()
         self.ui.setupUi(self)
+        
+        #Estas dos lineas siguientes bloquean el boton cerrar de la ventana
+        self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
+        self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
+        
+        #Se muestra la pantalla (interfaz)
         self.show()
 
+        #Lista con el nombre de las categorias que actualmente estan definidas
         self.botones = ['PF','HRMA_y','HRMB_y','HRMC_y','I','I0_B','PLTA','PSTA','V','W']
-        #Estructura que recibe los datos del dataframe
-        self.info = None
-        #Lista para almacenar los headers del dataframe
-        self.headers = [None]
-        #Lista que guarda todas las variables de las categorias existentes
-        self.variables = []
+        
+        
+        self.info = None #Estructura que recibe los datos del dataframe
+        self.headers = [None] #Lista para almacenar los headers del dataframe
+        self.variables = [] #Lista que guarda todas las variables de las categorias existentes 
+        self.exists = False #Variable que ayuda a saber si se llama a la ventana para ver la grafica generada
 
         # Listeners de los botones de la interfaz
         self.ui.PF.clicked.connect(self.graficar)
@@ -40,6 +52,12 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.ui.V.clicked.connect(self.graficar)
         self.ui.W.clicked.connect(self.graficar)
 
+        #El boton "Perzonalizado..." se coloca activo
+        self.ui.custom_button.setStyleSheet("border-color: black") 
+        self.ui.custom_button.setEnabled(True)
+        self.ui.custom_button.clicked.connect(self.custom)
+        
+        self.ui.backButton.clicked.connect (self.back)
         
         
         
@@ -52,19 +70,19 @@ class GraphicsMenu(QtWidgets.QMainWindow):
     # Metodo para obtener los headers de las columnas del dataframe
     def recuperarColumnas(self):
         self.headers = self.info.columns.tolist()
-        print ("headers")
-        print(self.headers)
 
-    
-    
+
+    # Metodo que evalua que graficas estaran disponibles
     def comparar(self):
         self.recuperarColumnas()
 
         for key in self.botones:
             if key in self.headers:
                 self.variables.append(key)
+                self.headers.remove(key)
         self.categoriasHabilitadas()
 
+    #Metodo que se encarga de habilitar las categorias de graficas disponibles
     def categoriasHabilitadas(self):
         for value in self.variables:
             if value == "PF":
@@ -95,31 +113,38 @@ class GraphicsMenu(QtWidgets.QMainWindow):
                 self.ui.PLTA.setStyleSheet("border-color: black")
                 self.ui.PLTA.setEnabled(True)
             if value == "I0_B":
-                self.ui.I0_B.setStyleSheet()
+                self.ui.I0_B.setStyleSheet("border-color: black")
                 self.ui.I0_B.setEnabled(True)
             
-
-    #Metodo no operativo.... Se requiere verificar que se puedan graficar disntintas
-    #variables
-    '''def custom(self):
-        self.custom = GraphicsComparison()
-        self.custom.setVariables(variables=self.values)
-        self.custom.show()'''
-    
-    
-    def graficar(self):
-        self.view = GraphicsView()
-        self.view.setData(datos=self.info)
-        self.view.setName(name=self.sender().objectName())
-        self.view.plotitem()
-        self.view.show()
-
-    def closeEvent(self, event):
-        if event:
-            self.view.close()
-
-
+    #Metodo que llama a la ventana del boton "Personalizado..."
+    def custom(self):
+        #En el constructor de la clase se pasan como argumento: Esta clase como "parent" y
+        # La lista de headers como "variables"
+        self.custom = GraphicsComparison(parent=self,variables=self.headers)
         
+        #Se pasa el dataframe generado para graficar
+        self.custom.setData(data=self.info)
+        self.custom.show()
+    
+    #Metodo que llama a la interfaz para ver las grafica generada de la categoria seleccionada
+    def graficar(self):
+        self.view = GraphicsView(parent=self) #En el constructor se pasa esta clase como "parent"
+        self.exists = True
+        self.view.setData(datos=self.info) #Se envia como argumento: dataframe como "info"
+
+        #Se envia como argumento: El nombre del boton clickeado para saber qué categoria se va agraficar 
+        self.view.setName(name=self.sender().objectName())
+        
+        self.view.plotitem() #Se llama al metodo que genera la grafica
+        self.view.show() #Se muestra la interfaz con la visualizacion de la grafica
+
+    # Metodo del boton "Regresar"
+    def back(self):
+        #Cierra la interfaz actual
+        self.close()
+        #Muestra la interfaz padre (Menu Principal)
+        self.parent.raise_()
+
 
 
 '''if __name__ == "__main__":
