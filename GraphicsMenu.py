@@ -20,7 +20,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.ui.setupUi(self)
         self.show()
 
-        self.botones = ['PF','HRMA','HRMB_y','HRMC_y','I','I0_B','PLTA','PSTA','V','W']
+        self.botones = ['PF','HRMA_y','HRMB_y','HRMC_y','I','I0_B','PLTA','PSTA','V','W']
         #Estructura que recibe los datos del dataframe
         self.info = None
         #Lista para almacenar los headers del dataframe
@@ -30,7 +30,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
 
         # Listeners de los botones de la interfaz
         self.ui.PF.clicked.connect(self.graficar)
-        self.ui.HRMA.clicked.connect(self.graficar)
+        self.ui.HRMA_y.clicked.connect(self.graficar)
         self.ui.HRMB_y.clicked.connect(self.graficar)
         self.ui.HRMC_y.clicked.connect(self.graficar)
         self.ui.I.clicked.connect(self.graficar)
@@ -65,8 +65,8 @@ class GraphicsMenu(QtWidgets.QMainWindow):
             if value == "PF":
                 self.ui.PF.setStyleSheet("border-color: black")
                 self.ui.PF.setEnabled(True)
-            if value == "HRMA":
-                self.ui.HRMA.setStyleSheet("border-color: black")
+            if value == "HRMA_y":
+                self.ui.HRMA_y.setStyleSheet("border-color: black")
                 self.ui.HRMA_y.setEnabled(True)
             if value =="HRMB_y":
                 self.ui.HRMB_y.setStyleSheet("border-color: black")
