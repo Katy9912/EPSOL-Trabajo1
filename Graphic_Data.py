@@ -219,8 +219,8 @@ class Graphic_Data:
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
         #se demora mucho cuando va a exportar
-        #filen=str(key+'.png')
-        #export_png(bp, filename=filen, height=600, width=800)
+        filen=str(key+'.png')
+        export_png(bp, filename=filen, height=600, width=800)
     
         return plot_name
 
