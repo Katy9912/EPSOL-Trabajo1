@@ -234,7 +234,7 @@ if __name__ == "__main__":
     
     filedialog.mainloop()
         
-    data = Data.merge(filenames,True)
+    data = Data.merge(filenames,False)
     
     for key in Data.mediciones_dict:
        name= Data.plot(data,key)
