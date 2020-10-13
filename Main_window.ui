@@ -14,7 +14,7 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>EPSOL Soluciones en Sistemas de Potencia y EnergíaSA de CV</string>
+   <string>EPSOL Soluciones en Sistemas de Potencia y Energía SA de CV</string>
   </property>
   <property name="windowIcon">
    <iconset resource="../Interfaz Grafica/Logo/Epsol_Logo.qrc">

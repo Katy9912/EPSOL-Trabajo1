@@ -14,7 +14,7 @@
    <cursorShape>ArrowCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>EPSOL Soluciones en Sistemas de Potencia y EnergíaSA de CV</string>
+   <string>EPSOL Soluciones en Sistemas de Potencia y Energía SA de CV</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Logo/Epsol_Logo.qrc">
@@ -57,7 +57,7 @@ QPushButton:pressed {
    <widget class="QLabel" name="titte_label">
     <property name="geometry">
      <rect>
-      <x>210</x>
+      <x>240</x>
       <y>20</y>
       <width>590</width>
       <height>60</height>
@@ -82,8 +82,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>120</y>
+      <x>440</x>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -113,7 +113,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>190</y>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -142,8 +142,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>400</y>
+      <x>860</x>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -172,8 +172,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>120</y>
+      <x>860</x>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -219,7 +219,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>190</y>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -248,8 +248,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>120</y>
+      <x>860</x>
+      <y>400</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -279,8 +279,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>190</y>
+      <x>20</x>
+      <y>400</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -303,13 +303,13 @@ QPushButton:pressed {
      <string>Corriente</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="FR">
+   <widget class="QPushButton" name="frecuency_button">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
+      <x>650</x>
       <y>260</y>
       <width>190</width>
       <height>40</height>
@@ -339,8 +339,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>330</y>
+      <x>230</x>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -399,8 +399,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>120</y>
+      <x>440</x>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -429,7 +429,7 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>230</x>
       <y>190</y>
       <width>190</width>
       <height>40</height>
@@ -459,8 +459,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>650</x>
-      <y>260</y>
+      <x>230</x>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -490,7 +490,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>650</x>
-      <y>330</y>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -520,7 +520,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>860</x>
-      <y>120</y>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -549,8 +549,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>190</y>
+      <x>20</x>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -579,7 +579,7 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
+      <x>650</x>
       <y>400</y>
       <width>190</width>
       <height>40</height>
@@ -610,7 +610,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>860</x>
-      <y>330</y>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -640,8 +640,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>260</y>
+      <x>650</x>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -701,7 +701,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>230</x>
-      <y>260</y>
+      <y>400</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -730,8 +730,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>330</y>
+      <x>440</x>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -760,8 +760,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>400</y>
+      <x>440</x>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -784,14 +784,14 @@ QPushButton:pressed {
      <string>Energía Reactiva Adel./Retr.</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="HRMC_y">
+   <widget class="QPushButton" name="HRMC">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>330</y>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -821,7 +821,7 @@ QPushButton:pressed {
     <property name="geometry">
      <rect>
       <x>650</x>
-      <y>400</y>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -845,14 +845,14 @@ QPushButton:pressed {
      <string>Flicker PSTA</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="HRMB_y">
+   <widget class="QPushButton" name="HRMB">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>260</y>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -875,6 +875,37 @@ QPushButton:pressed {
      <string>Armónicos B</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:10px;
+border-color: rgb(32, 112, 137);</string>
+    </property>
+    <property name="text">
+     <string>REGRESAR</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>16</height>
+     </size>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAbout">
@@ -884,13 +915,13 @@ QPushButton:pressed {
   </action>
  </widget>
  <tabstops>
-  <tabstop>HRMA</tabstop>
   <tabstop>thd_button</tabstop>
   <tabstop>W</tabstop>
   <tabstop>energy_W_button</tabstop>
   <tabstop>V</tabstop>
+  <tabstop>HRMA</tabstop>
   <tabstop>I</tabstop>
-  <tabstop>FR</tabstop>
+  <tabstop>frecuency_button</tabstop>
   <tabstop>harmonic_distortion_button</tabstop>
   <tabstop>k_factor_button</tabstop>
   <tabstop>potency_distortion_factor_button</tabstop>
@@ -904,6 +935,13 @@ QPushButton:pressed {
   <tabstop>current_angle_button</tabstop>
   <tabstop>current_history_button</tabstop>
   <tabstop>custom_button</tabstop>
+  <tabstop>energy_U_button</tabstop>
+  <tabstop>energy_Q_button</tabstop>
+  <tabstop>energy_VAR_button</tabstop>
+  <tabstop>HRMC</tabstop>
+  <tabstop>PSTA</tabstop>
+  <tabstop>HRMB</tabstop>
+  <tabstop>backButton</tabstop>
  </tabstops>
  <resources>
   <include location="Logo/Epsol_Logo.qrc"/>

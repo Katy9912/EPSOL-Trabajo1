@@ -14,7 +14,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1266, 678)
+        MainWindow.resize(1266, 715)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/EPSOL_ICO/LogoEpsol.ico"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -49,24 +49,50 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(0, 0, 1200, 600))
-        self.widget.setSizeIncrement(QtCore.QSize(120, 100))
+        self.widget.setGeometry(QtCore.QRect(200, 80, 1040, 500))
         self.widget.setObjectName("widget")
+        self.logo_label = QtWidgets.QLabel(self.centralwidget)
+        self.logo_label.setGeometry(QtCore.QRect(60, 570, 161, 91))
+        self.logo_label.setStyleSheet("border-image: url(:/EPSOL/LogoEpsolCMYK.png);")
+        self.logo_label.setText("")
+        self.logo_label.setObjectName("logo_label")
+        self.homeButton = QtWidgets.QPushButton(self.centralwidget)
+        self.homeButton.setGeometry(QtCore.QRect(20, 30, 100, 30))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.homeButton.setFont(font)
+        self.homeButton.setStyleSheet("border-radius:10px;\n"
+"border-color: rgb(32, 112, 137);")
+        self.homeButton.setIconSize(QtCore.QSize(16, 16))
+        self.homeButton.setObjectName("homeButton")
+        self.backButton = QtWidgets.QPushButton(self.centralwidget)
+        self.backButton.setGeometry(QtCore.QRect(140, 30, 100, 30))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.backButton.setFont(font)
+        self.backButton.setStyleSheet("border-radius:10px;\n"
+"border-color: rgb(32, 112, 137);")
+        self.backButton.setIconSize(QtCore.QSize(16, 16))
+        self.backButton.setObjectName("backButton")
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1266, 21))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "EPSOL Soluciones en Sistemas de Potencia y EnergíaSA de CV"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "EPSOL Soluciones en Sistemas de Potencia y Energía SA de CV"))
+        self.homeButton.setText(_translate("MainWindow", "INICIO"))
+        self.backButton.setText(_translate("MainWindow", "REGRESAR"))
 import Epsol_Logo_rc
 
 

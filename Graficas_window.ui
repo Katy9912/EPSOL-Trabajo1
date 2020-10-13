@@ -7,11 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>1266</width>
-    <height>678</height>
+    <height>715</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>EPSOL Soluciones en Sistemas de Potencia y EnergíaSA de CV</string>
+   <string>EPSOL Soluciones en Sistemas de Potencia y Energía SA de CV</string>
   </property>
   <property name="windowIcon">
    <iconset resource="Logo/Epsol_Logo.qrc">
@@ -51,31 +51,93 @@ QPushButton:pressed {
    <widget class="QWidget" name="widget" native="true">
     <property name="geometry">
      <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>1200</width>
-      <height>600</height>
+      <x>200</x>
+      <y>80</y>
+      <width>1040</width>
+      <height>500</height>
      </rect>
     </property>
-    <property name="sizeIncrement">
+   </widget>
+   <widget class="QLabel" name="logo_label">
+    <property name="geometry">
+     <rect>
+      <x>60</x>
+      <y>570</y>
+      <width>161</width>
+      <height>91</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-image: url(:/EPSOL/LogoEpsolCMYK.png);</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="homeButton">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>30</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:10px;
+border-color: rgb(32, 112, 137);</string>
+    </property>
+    <property name="text">
+     <string>INICIO</string>
+    </property>
+    <property name="iconSize">
      <size>
-      <width>120</width>
-      <height>100</height>
+      <width>16</width>
+      <height>16</height>
+     </size>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="backButton">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>30</y>
+      <width>100</width>
+      <height>30</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-radius:10px;
+border-color: rgb(32, 112, 137);</string>
+    </property>
+    <property name="text">
+     <string>REGRESAR</string>
+    </property>
+    <property name="iconSize">
+     <size>
+      <width>16</width>
+      <height>16</height>
      </size>
     </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menubar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1266</width>
-     <height>21</height>
-    </rect>
-   </property>
-  </widget>
  </widget>
  <resources>
   <include location="Logo/Epsol_Logo.qrc"/>
