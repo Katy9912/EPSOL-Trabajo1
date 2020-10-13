@@ -4,7 +4,6 @@ import numpy as np
 import os
 import docx
 from docx import Document
-import imgkit
 
 from datetime import datetime
 import csv
