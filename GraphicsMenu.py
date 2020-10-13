@@ -6,11 +6,11 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets
 
 # Se importa el .py de la interfaz gráfica
-from Scripts.App_V2.Graficas_menu import *
+from Scripts.App_V3.Graficas_menu import *
 
-from Scripts.App_V2.GraphicsComparison import *
-from Scripts.App_V2.Graphic_Data import *
-from Scripts.App_V2.GraphicsView import *
+from Scripts.App_V3.GraphicsComparison import *
+from Scripts.App_V3.Graphic_Data import *
+from Scripts.App_V3.GraphicsView import *
 
 
 class GraphicsMenu(QtWidgets.QMainWindow):
@@ -32,7 +32,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.show()
 
         #Lista con el nombre de las categorias que actualmente estan definidas
-        self.botones = ['PF','HRMA_y','HRMB_y','HRMC_y','I','I0_B','PLTA','PSTA','V','W']
+        self.botones = ['PF','HRMA','HRMB','HRMC','I','I0_B','PLTA','PSTA','V','W']
         
         
         self.info = None #Estructura que recibe los datos del dataframe
@@ -42,9 +42,9 @@ class GraphicsMenu(QtWidgets.QMainWindow):
 
         # Listeners de los botones de la interfaz
         self.ui.PF.clicked.connect(self.graficar)
-        self.ui.HRMA_y.clicked.connect(self.graficar)
-        self.ui.HRMB_y.clicked.connect(self.graficar)
-        self.ui.HRMC_y.clicked.connect(self.graficar)
+        self.ui.HRMA.clicked.connect(self.graficar)
+        self.ui.HRMB.clicked.connect(self.graficar)
+        self.ui.HRMC.clicked.connect(self.graficar)
         self.ui.I.clicked.connect(self.graficar)
         self.ui.I0_B.clicked.connect(self.graficar)
         self.ui.PLTA.clicked.connect(self.graficar)
@@ -53,9 +53,9 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.ui.W.clicked.connect(self.graficar)
 
         #El boton "Perzonalizado..." se coloca activo
-        self.ui.custom_button.setStyleSheet("border-color: black") 
-        self.ui.custom_button.setEnabled(True)
-        self.ui.custom_button.clicked.connect(self.custom)
+       # self.ui.custom_button.setStyleSheet("border-color: black") 
+       # self.ui.custom_button.setEnabled(True)
+       # self.ui.custom_button.clicked.connect(self.custom)
         
         self.ui.backButton.clicked.connect (self.back)
         
@@ -70,8 +70,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
     # Metodo para obtener los headers de las columnas del dataframe
     def recuperarColumnas(self):
         self.headers = self.info.columns.tolist()
-
-
+       
     # Metodo que evalua que graficas estaran disponibles
     def comparar(self):
         self.recuperarColumnas()
@@ -79,24 +78,29 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         for key in self.botones:
             if key in self.headers:
                 self.variables.append(key)
-                self.headers.remove(key)
+            else:
+                new=str(key+'_y')
+                temp = len(new)
+                if new in self.headers:
+                    new2=str(key[:len(new)-2])
+                    self.variables.append(new2)
         self.categoriasHabilitadas()
-
+    
     #Metodo que se encarga de habilitar las categorias de graficas disponibles
     def categoriasHabilitadas(self):
         for value in self.variables:
             if value == "PF":
                 self.ui.PF.setStyleSheet("border-color: black")
                 self.ui.PF.setEnabled(True)
-            if value == "HRMA_y":
-                self.ui.HRMA_y.setStyleSheet("border-color: black")
-                self.ui.HRMA_y.setEnabled(True)
-            if value =="HRMB_y":
-                self.ui.HRMB_y.setStyleSheet("border-color: black")
-                self.ui.HRMB_y.setEnabled(True)
-            if value == "HRMC_y":
-                self.ui.HRMC_y.setStyleSheet("border-color: black")
-                self.ui.HRMC_y.setEnabled(True)
+            if value == "HRMA":
+                self.ui.HRMA.setStyleSheet("border-color: black")
+                self.ui.HRMA.setEnabled(True)
+            if value =="HRMB":
+                self.ui.HRMB.setStyleSheet("border-color: black")
+                self.ui.HRMB.setEnabled(True)
+            if value == "HRMC":
+                self.ui.HRMC.setStyleSheet("border-color: black")
+                self.ui.HRMC.setEnabled(True)
             if value == "V":
                 self.ui.V.setStyleSheet("border-color: black")
                 self.ui.V.setEnabled(True)

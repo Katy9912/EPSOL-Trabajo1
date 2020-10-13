@@ -6,8 +6,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
 
-from Scripts.App_V2.Graficas_Comparacion import * 
-from Scripts.App_V2.Graphic_Data import Graphic_Data
+from Scripts.App_V3.Graficas_Comparacion import * 
+from Scripts.App_V3.Graphic_Data import Graphic_Data
 
 
 class GraphicsComparison(QtWidgets.QMainWindow):

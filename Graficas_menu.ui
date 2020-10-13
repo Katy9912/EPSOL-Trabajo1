@@ -106,7 +106,7 @@ QPushButton:pressed {
      <string>Factor de Potencia</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="HRMA_y">
+   <widget class="QPushButton" name="HRMA">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -784,7 +784,7 @@ QPushButton:pressed {
      <string>Energía Reactiva Adel./Retr.</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="HRMC_y">
+   <widget class="QPushButton" name="HRMC">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -845,7 +845,7 @@ QPushButton:pressed {
      <string>Flicker PSTA</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="HRMB_y">
+   <widget class="QPushButton" name="HRMB">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -919,7 +919,7 @@ border-color: rgb(32, 112, 137);</string>
   <tabstop>W</tabstop>
   <tabstop>energy_W_button</tabstop>
   <tabstop>V</tabstop>
-  <tabstop>HRMA_y</tabstop>
+  <tabstop>HRMA</tabstop>
   <tabstop>I</tabstop>
   <tabstop>frecuency_button</tabstop>
   <tabstop>harmonic_distortion_button</tabstop>
@@ -938,9 +938,9 @@ border-color: rgb(32, 112, 137);</string>
   <tabstop>energy_U_button</tabstop>
   <tabstop>energy_Q_button</tabstop>
   <tabstop>energy_VAR_button</tabstop>
-  <tabstop>HRMC_y</tabstop>
+  <tabstop>HRMC</tabstop>
   <tabstop>PSTA</tabstop>
-  <tabstop>HRMB_y</tabstop>
+  <tabstop>HRMB</tabstop>
   <tabstop>backButton</tabstop>
  </tabstops>
  <resources>
