@@ -129,9 +129,9 @@ class Graphic_Data:
         
         merge = reduce(lambda left, right: pd.merge(left, right, on='Datetime', how='outer'), LDPS)
         
-        #merge = merge.sort_values(by=['Datetime'])
-        #merge = merge.reset_index(drop=True)
-        #merge = merge.set_index('Datetime')       
+        merge = merge.sort_values(by=['Datetime'])
+        merge = merge.reset_index(drop=True)
+        merge = merge.set_index('Datetime')       
 
         return merge
     
