@@ -15,8 +15,8 @@ import docx
 from docx import Document
 
 
-def grupos(data,key,col):
-    
+def grupos(data,key,col):    
+   
     g=[]
     for pos in col:
          para_b=data.iloc[:,pos]
@@ -33,8 +33,10 @@ def grupos(data,key,col):
     
     del data[new_columns[g[1]]]
     new_columns=list(data.columns[f:m-1])
+   
     return new_columns
-        
+
+      
     
 #Clase Para obtener toda la data
 class Graphic_Data:
@@ -219,6 +221,7 @@ class Graphic_Data:
         #se demora mucho cuando va a exportar
         #filen=str(key+'.png')
         #export_png(bp, filename=filen, height=600, width=800)
+    
         return plot_name
 
 
@@ -235,6 +238,7 @@ if __name__ == "__main__":
     filedialog.mainloop()
         
     data = Data.merge(filenames,False)
+ 
     
     for key in Data.mediciones_dict:
        name= Data.plot(data,key)

@@ -58,6 +58,10 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         for key in self.botones:
             if key in self.headers:
                 self.variables.append(key)
+            else:
+                new=str(key+'_y')
+                if new in self.headers:
+                   self.variables.append(new)
         self.categoriasHabilitadas()
         
     def categoriasHabilitadas(self):
