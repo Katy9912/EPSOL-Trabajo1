@@ -78,9 +78,9 @@ class GraphicsView (QtWidgets.QMainWindow):
         self.parent.parent.raise_()
         
     #Metodo que elimina los archivos html generados al momento de cerrar la ventana
-    '''def closeEvent(self, event):
+    def closeEvent(self, event):
         if event:
             if self.plot_list:
                 for file in self.plot_list:
                     os.remove(file)
-                    self.plot_list.remove(file)'''
+                    self.plot_list.remove(file)

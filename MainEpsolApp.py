@@ -4,7 +4,7 @@ import numpy as np
 import os
 import docx
 from docx import Document
-import imgkit
+import shutil
 
 from datetime import datetime
 import csv
@@ -26,16 +26,16 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.ui = Ui_root()
         self.ui.setupUi(self)
         self.show()
-        self.files = None
-        self.initial_dir = "../"        
+        #self.makeDir()
+        self.initial_dir = "../"
+        self.files = None     
         self.data = None
         self.band=False
         self.available = False
         
         #Variable que almacenará los archivos a utilizar en el programa
         self.files = None
-        #Path del folder inicial
-        self.initial_dir = "../"
+        
         # Variable que almacenará el merge de los archivos cargados
         self.data = None
 
@@ -56,13 +56,16 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         if self.files[0]:
             graph = Graphic_Data()
             self.data = graph.merge(self.files[0],self.band)
-            
+
+    #Metodo que crea la carpeta nueva para almacenar
+    # los archivos de la ejecucion
+    def makeDir(self):
+        nombre = datetime.now().strftime('ArchivosAnalizados__%H_%M_%d_%m_%Y') 
+        os.mkdir(nombre)
+        self.initial_dir = os.path.join("../",nombre)
+
 
     #Metodo que descarga el csv de la informacion procesada
-    #NECESITA CODIGO
-    '''Lo que esta dentro de este metodo es para generar un CSV. Aqui
-    se hace la limpieza del dataframe para eliminar las columnas'''
-    
     def download(self):
     
         if self.data is None:
@@ -78,7 +81,6 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             
             
     def generateReport(self):
-        
         
         path = "../"       
         lstFiles = []        

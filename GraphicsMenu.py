@@ -38,7 +38,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.info = None #Estructura que recibe los datos del dataframe
         self.headers = [None] #Lista para almacenar los headers del dataframe
         self.variables = [] #Lista que guarda todas las variables de las categorias existentes 
-        self.exists = False #Variable que ayuda a saber si se llama a la ventana para ver la grafica generada
+       
 
         # Listeners de los botones de la interfaz
         self.ui.PF.clicked.connect(self.graficar)
@@ -133,7 +133,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
     #Metodo que llama a la interfaz para ver las grafica generada de la categoria seleccionada
     def graficar(self):
         self.view = GraphicsView(parent=self) #En el constructor se pasa esta clase como "parent"
-        self.exists = True
+  
         self.view.setData(datos=self.info) #Se envia como argumento: dataframe como "info"
 
         #Se envia como argumento: El nombre del boton clickeado para saber qué categoria se va agraficar 
