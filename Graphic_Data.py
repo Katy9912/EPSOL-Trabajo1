@@ -30,7 +30,7 @@ def grupos(data,key,col):
     f=m-(g2+1)
     new_columns=list(data.columns[f:m])
     
-    del data[new_columns[g[1]]]
+    del data[new_columns[g[1]-1]]
     new_columns=list(data.columns[f:m-1])
     return new_columns
         
@@ -64,57 +64,68 @@ class Graphic_Data:
     #Función que limpia los cvs
     def __clean(self, path):
 
-        palabra = "Record"
-        inde=[]
-        rows=[]
-        with open(path, newline='') as File:
-            reader = csv.reader(File)
-            for index, row in enumerate(reader):
-                inde.append(index)
-                rows.append(row)
-                if row[0] == palabra:
-                    cut_index = index        
-        
-        palabra=rows[4][0]
-        index=palabra.find('_')
-        name=None       
-        
-        
-        new =[None]*(len(inde)-cut_index-1)
-        new[0:len(rows[4])]=rows[4]        
-        
-        if index > 0:
-           if palabra[0].isdigit():               
-               name=palabra[-3:len(palabra)]
-               new[len(rows[4])]=name
-           else:
-               name=str(palabra[0:3]+palabra[-1])
-               new[len(rows[4])]=name   
-               
+            palabra = "Record"   
+ 
+            with open(path, newline='') as File:
+                reader = csv.reader(File)
+                for index, row in enumerate(reader):
             
-        else:             
-            if len(palabra) > 2:                
-                name=palabra[0:2]
-                new[len(rows[4])]=name      
-            else:
-                name=palabra[0:1]     
-                new[len(rows[4])]=name      
-              
-        data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')
-        data.columns = data.columns.str.replace('"', "")
-        data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
-        data['Date'] = pd.to_datetime(data['Date'], format="%m/%d/%Y.%H:%M:%S")
-        data = data.rename(columns={'Date': 'Datetime'})
-        data[name]=new
+                    if row[0] == palabra:
+                        cut_index = index        
+            
+            try:                   
+                data = pd.read_csv(path, skiprows=cut_index, delimiter='""'and',', engine='python')    
+            except Exception as e:   
+                data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')       
+                print(e)
+                
+            data.columns = data.columns.str.replace('"', "")
+            data.columns = data.columns.str.replace(' ', "")
+            data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
+            try:
+                data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)                
+            except Exception as e: 
+                   
+                   data=data.dropna(axis=0)
+                   data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)
+                   
+            data = data.rename(columns={'Date': 'Datetime'})                    
+            
+            del data['Time']
+            del data['Status']
+            del data['Record']
+            dat=data.dropna(axis=1)
+            dat=dat.loc[:, ~dat.columns.str.contains('^Unnamed')]
+            
+            name=None
+            
+            new =[None]*(len(dat))
+            
+            palabra=dat.columns[1]
+            
+            columns=list(dat.columns[1:np.shape(dat)[1]])
+            new[0:len(columns)]=columns        
+            
+            index=palabra.find('_')
+            if index > 0:
+               if palabra[0].isdigit():               
+                   name=palabra[-3:len(palabra)]
+                   new[len(columns)]=name
+               else:
+                   name=str(palabra[0:3]+palabra[-1])
+                   new[len(columns)]=name         
+                
+            else:             
+                if len(palabra) > 2:                
+                    name=palabra[0:2]
+                    new[len(columns)]=name      
+                else:
+                    name=palabra[0:1]     
+                    new[len(columns)]=name
+            dat[name]=new                  
+                
+            return dat.copy()
         
-        del data['Time']
-        del data['Status']
-        del data['Record']
-              
-        
-        return data.copy()
-
-    #Funcoion que hace el merge de los dataframes
     def merge(self, filenames,band):
 
         LDPS = [None] * len(filenames)
@@ -137,21 +148,37 @@ class Graphic_Data:
     
     def __clean2(self, path):
 
-        palabra = "Record"
-        with open(path, newline='') as File:
-            reader = csv.reader(File)
-            for index, row in enumerate(reader):
-                if row[0] == palabra:
-                    cut_index = index
-        data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')
-        data.columns = data.columns.str.replace('"', "")
-        data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
-        data['Date'] = pd.to_datetime(data['Date'], format="%m/%d/%Y.%H:%M:%S")
-        data = data.rename(columns={'Date': 'Datetime'})
-        del data['Time']
-        del data['Status']
-        del data['Record']
-        return data.copy()
+            palabra = "Record"   
+ 
+            with open(path, newline='') as File:
+                reader = csv.reader(File)
+                for index, row in enumerate(reader):
+            
+                    if row[0] == palabra:
+                        cut_index = index        
+            
+            try:                   
+                data = pd.read_csv(path, skiprows=cut_index, delimiter='""'and',', engine='python')    
+            except Exception as e:   
+                data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')       
+                print(e)
+                
+            data.columns = data.columns.str.replace('"', "")
+            data.columns = data.columns.str.replace(' ', "")
+            data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
+            try:
+                data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)                
+            except Exception as e: 
+                   
+                   data=data.dropna(axis=0)
+                   data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)
+                   
+            data = data.rename(columns={'Date': 'Datetime'})                    
+            
+            del data['Time']
+            del data['Status']
+            del data['Record']              
+            return data.copy()
    
 
     #Funcion generadora de graficas
@@ -188,14 +215,13 @@ class Graphic_Data:
             c=data[i]
             new_file[i]=c
         
-        final = new_file['2020-04-01 00:00:00':'2020-04-02 00:00:00'].dropna()        
+        final = new_file.dropna()        
         
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
         bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
                     sizing_mode="scale_width", title=key, tools=tools)
         bp.toolbar.autohide = True
-        # green_box = BoxAnnotation(top=1, bottom=0.95, fill_color='blue', fill_alpha=0.1)
-        # bp.add_layout(green_box)
+
 
         for column, color in zip(list(final), Category20_20):
             
@@ -217,8 +243,8 @@ class Graphic_Data:
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
         #se demora mucho cuando va a exportar
-        filen=str('./Imagenes/'+key+'.png')
-        export_png(bp, filename=filen, height=6, width=8)
+        #filen=str('./Imagenes/'+key+'.png')
+        #export_png(bp, filename=filen, height=6, width=8)
         return plot_name
 
 
@@ -234,8 +260,8 @@ if __name__ == "__main__":
     
     filedialog.mainloop()
         
-    data = Data.merge(filenames,False)
+    data = Data.merge(filenames,True)
     
-    for key in Data.mediciones_dict:
-       name= Data.plot(data,key)
+    #for key in Data.mediciones_dict:
+    #   name= Data.plot(data,key)
          
