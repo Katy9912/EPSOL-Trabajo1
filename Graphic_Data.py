@@ -12,8 +12,6 @@ import numpy as np
 from functools import reduce
 import csv
 
-
-
 def grupos(data,key,col):
     
     g=[]
@@ -62,50 +60,51 @@ class Graphic_Data:
 
 
     #Función que limpia los cvs
-    def __clean(self, path):
+    def clean(self, path,band):
+        
 
-            palabra = "Record"   
- 
-            with open(path, newline='') as File:
-                reader = csv.reader(File)
-                for index, row in enumerate(reader):
+        palabra = "Record"   
+     
+        with open(path, newline='') as File:
+            reader = csv.reader(File)
+            for index, row in enumerate(reader):
+        
+                if row[0] == palabra:
+                    cut_index = index        
+        
+        try:                   
+            data = pd.read_csv(path, skiprows=cut_index, delimiter='""'and',', engine='python')    
+        except Exception as e:   
+            data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')       
+            print(e)
             
-                    if row[0] == palabra:
-                        cut_index = index        
-            
-            try:                   
-                data = pd.read_csv(path, skiprows=cut_index, delimiter='""'and',', engine='python')    
-            except Exception as e:   
-                data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')       
-                print(e)
-                
-            data.columns = data.columns.str.replace('"', "")
-            data.columns = data.columns.str.replace(' ', "")
-            data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
-            try:
-                data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)                
-            except Exception as e: 
-                   
-                   data=data.dropna(axis=0)
-                   data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)
-                   
-            data = data.rename(columns={'Date': 'Datetime'})                    
-            
-            del data['Time']
-            del data['Status']
-            del data['Record']
+        data.columns = data.columns.str.replace('"', "")
+        data.columns = data.columns.str.replace(' ', "")
+        data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
+        try:
+            data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)                
+        except Exception as e: 
+               
+               data=data.dropna(axis=0)
+               data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)
+               
+        data = data.rename(columns={'Date': 'Datetime'})                    
+        
+        del data['Time']
+        del data['Status']
+        del data['Record']
+        if band == True:
+            data=data.loc[:, ~data.columns.str.contains('^Unnamed')]    
+            return data.copy()
+        elif band== False:
             dat=data.dropna(axis=1)
-            dat=dat.loc[:, ~dat.columns.str.contains('^Unnamed')]
+            dat=dat.loc[:, ~dat.columns.str.contains('^Unnamed')]    
             
-            name=None
-            
-            new =[None]*(len(dat))
-            
-            palabra=dat.columns[1]
-            
+            name=None            
+            new =[None]*(len(dat))            
+            palabra=dat.columns[1]            
             columns=list(dat.columns[1:np.shape(dat)[1]])
-            new[0:len(columns)]=columns        
-            
+            new[0:len(columns)]=columns                    
             index=palabra.find('_')
             if index > 0:
                if palabra[0].isdigit():               
@@ -129,57 +128,21 @@ class Graphic_Data:
     def merge(self, filenames,band):
 
         LDPS = [None] * len(filenames)
-      
-        
+  
+    
         for num, file in enumerate(filenames):
-            if band == False:
-                LDPS[num] = self.__clean(file)       
-            elif band==True:
-                LDPS[num] = self.__clean2(file)       
-        
+            LDPS[num] =self.clean(file,band)       
+            
         
         merge = reduce(lambda left, right: pd.merge(left, right, on='Datetime', how='outer'), LDPS)
         
         merge = merge.sort_values(by=['Datetime'])
         merge = merge.reset_index(drop=True)
         merge = merge.set_index('Datetime')       
-
+        
         return merge
     
-    def __clean2(self, path):
-
-            palabra = "Record"   
- 
-            with open(path, newline='') as File:
-                reader = csv.reader(File)
-                for index, row in enumerate(reader):
-            
-                    if row[0] == palabra:
-                        cut_index = index        
-            
-            try:                   
-                data = pd.read_csv(path, skiprows=cut_index, delimiter='""'and',', engine='python')    
-            except Exception as e:   
-                data = pd.read_csv(path, skiprows=cut_index, delimiter=', ', engine='python')       
-                print(e)
-                
-            data.columns = data.columns.str.replace('"', "")
-            data.columns = data.columns.str.replace(' ', "")
-            data['Date'] = data['Date'].map(str) + "." + data['Time'].map(str)
-            try:
-                data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)                
-            except Exception as e: 
-                   
-                   data=data.dropna(axis=0)
-                   data['Date'] = pd.to_datetime(data['Date'], infer_datetime_format=True)
-                   
-            data = data.rename(columns={'Date': 'Datetime'})                    
-            
-            del data['Time']
-            del data['Status']
-            del data['Record']              
-            return data.copy()
-   
+    
 
     #Funcion generadora de graficas
     def plot(self, dataframe, key):
