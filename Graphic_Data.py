@@ -28,7 +28,7 @@ def grupos(data,key,col):
     f=m-(g2+1)
     new_columns=list(data.columns[f:m])
     
-    del data[new_columns[g[1]-1]]
+    del data[new_columns[g[1]]]
     new_columns=list(data.columns[f:m-1])
     return new_columns
         
@@ -208,7 +208,7 @@ class Graphic_Data:
         #se demora mucho cuando va a exportar
         #filen=str('./Imagenes/'+key+'.png')
         #export_png(bp, filename=filen, height=6, width=8)
-        return plot_name
+        return plot_name,new_columns
 
 
 if __name__ == "__main__":
@@ -223,8 +223,9 @@ if __name__ == "__main__":
     
     filedialog.mainloop()
         
-    data = Data.merge(filenames,True)
-    
-    #for key in Data.mediciones_dict:
-    #   name= Data.plot(data,key)
+    data = Data.merge(filenames,False)
+    #key='HRMA'
+    #name,new_columns= Data.plot(data,key)
+    for key in Data.mediciones_dict:
+        name,new_columns= Data.plot(data,key)
          
