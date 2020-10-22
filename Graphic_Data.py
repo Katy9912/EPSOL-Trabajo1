@@ -15,26 +15,94 @@ from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
 options.add_argument('--headless')
 web_driver=Chrome(executable_path='chromedriver_win32\chromedriver.exe',options=options)
-def grupos(data,key,col):
-    
-    g=[]
-    for pos in col:
-         para_b=data.iloc[:,pos]
-         para_b=para_b.dropna()
-         ind=len(para_b)-1
-         para_b.loc[para_b.index[ind]]=None
-         para_b=len(para_b.dropna())
-         g.append(para_b)
-    g2=np.sum(g)
-    #del merge[merge.columns[min(col)]]         
-    m=max(np.where(data.values==key)[1])
-    f=m-(g2+1)
-    new_columns=list(data.columns[f:m])
-    
-    del data[new_columns[g[1]]]
-    new_columns=list(data.columns[f:m-1])
-    return new_columns
+
+def new_gra(data):
+
+    keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN']
+    pruebas=list(data.columns)
+    dataas=pd.DataFrame()
+    pruebas_c=[]
+    for i in keys:    
+        k=0    
+        for j in pruebas:
+            p=j.find(i)
+            
+            if p>=0:            
+                pruebas_c.append(j)
+                dataas[i] =np.zeros(len(pruebas))            
+                pruebas[k]=str(0)
         
+            k=k+1    
+        if len(pruebas_c)>0:
+            dataas[i][0:len(pruebas_c)]=pruebas_c
+            pruebas_c=[]
+            
+    HRMA=[] 
+    HRMB=[] 
+    HRMC=[] 
+    
+    
+    keys='HRM'
+    k=0
+    for j in pruebas:
+        p=j.find(keys)
+        
+        if p>=0:
+            
+            p1=j.find('A')
+            if p1>=0:
+                HRMA.append(j)
+                dataas[str(keys+'A')] =np.zeros(len(pruebas))
+            else:
+                p1=j.find('B')
+                if p1>=0:
+                    HRMB.append(j)
+                    dataas[str(keys+'B')] =np.zeros(len(pruebas))
+                else: 
+                    p1=j.find('C')
+                    if p1>=0:
+                        HRMC.append(j)
+                        dataas[str(keys+'C')] =np.zeros(len(pruebas))
+                
+            pruebas[k]=str(0)
+    
+        k=k+1    
+    if len(HRMA)>0:
+        dataas[str(keys+'A')][0:len(HRMA)]=HRMA
+        HRMA=[] 
+    if len(HRMB)>0:
+        dataas[str(keys+'B')][0:len(HRMB)]=HRMB
+        HRMB=[] 
+    if len(HRMC)>0:
+        dataas[str(keys+'C')][0:len(HRMC)]=HRMC
+        HRMC=[] 
+    
+    keys=['I','V']
+    pruebas_c=[]
+    for i in keys:    
+        k=0    
+        for j in pruebas:
+            p=j.find(i)
+            
+            if p>=0:            
+                pruebas_c.append(j)
+                dataas[i] =np.zeros(len(pruebas))            
+                pruebas[k]=str(0)
+        
+            k=k+1    
+        if len(pruebas_c)>0:
+            dataas[i][0:len(pruebas_c)]=pruebas_c
+            pruebas_c=[]
+            
+    dataas['P'] =np.zeros(len(pruebas))
+    pruebas=list(filter(lambda x: x != str(0), pruebas))
+    if len(pruebas)>0:
+        
+        dataas['P'][0:len(pruebas)]=pruebas
+    else:
+        del dataas['P']
+    
+    return dataas
     
 #Clase Para obtener toda la data
 class Graphic_Data:
@@ -142,8 +210,16 @@ class Graphic_Data:
         from bokeh.palettes import Spectral4, Category20_20
         from bokeh.io import export_png        
 
+        #data = dataframe.copy()      
+        #final = data[self.mediciones_dict[key]].dropna()  
         data = dataframe.copy()      
-        final = data[self.mediciones_dict[key]].dropna()  
+        dataas=new_gra(data)
+        new_c=dataas[key]                   #   
+        new_c=list(new_c[~(new_c==0)])       #   
+                                             #
+        new_d=pd.DataFrame()                 #
+        new_d=data[new_c]                    #   
+        final=new_d.dropna()     
         
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
         bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
@@ -191,6 +267,7 @@ if __name__ == "__main__":
     data = Data.merge(filenames)
     #key='HRMA'
     #name,new_columns= Data.plot(data,key)
-    for key in Data.mediciones_dict:
+    keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN','HRMA','HRMB','HRMC','I','V','P']
+    for key in keys:
         name= Data.plot(data,key)
          
