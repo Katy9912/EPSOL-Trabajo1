@@ -43,7 +43,8 @@ categorias=dict(PF=['PFT3','LDPFT3','PFTA','LDPFTA','PFTB','LDPFTB','PFTC','LDPF
                 HistoV=['VAMX','VAMN','VBMX','VBMN','VCMX','VCMN'],
                 HistoP=['W3MX','W3MN','U3MX','U3MN','Q3MX','Q3MN'],
                 EnerAc=['WH3_DEL','WH3_REC','WHA_NET','WHB_NET','WH3_NET','WHC_NET'],
-                EnerAp=['UH3_DEL','UH3_REC'],EnerR=['QH3_DEL','QH3_REC','QHA_DEL','QHA_REC','QHB_DEL','QHB_REC','QHC_DEL','QHC_REC','QH3_NET'],
+                EnerAp=['UH3_DEL','UH3_REC'],
+                EnerR=['QH3_DEL','QH3_REC','QHA_DEL','QHA_REC','QHB_DEL','QHB_REC','QHC_DEL','QHC_REC','QH3_NET'],
                 EnerRA=['VARH3_DEL_LG','VARH3_DEL_LD','VARH3_REC_LG','VARH3_REC_LD'])
 
 def clean(path,band):
@@ -212,16 +213,64 @@ filenames = filedialog.askopenfilenames(title="Selecciona los Archivos",
 filedialog.mainloop()
 data = merge(filenames,True)    
 #data = Data.merge(filenames,False)
-key='HRMA'
-name= plot(data,key)
+#key='HRMA'
+#name= plot(data,key)
 
 
 
 
+keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR']
+pruebas=list(data.columns)
+dataas=pd.DataFrame()
+pruebas_c=[]
+for i in keys:
+    
+    k=0
+    
+    for j in pruebas:
+        p=j.find(i)
+        
+        if p>=0:
+            
+            pruebas_c.append(j)
+            dataas[i] =np.zeros(len(pruebas))
+            
+            pruebas[k]=str(0)
+    
+        k=k+1    
+    if len(pruebas_c)>0:
+        dataas[i][0:len(pruebas_c)]=pruebas_c
+        pruebas_c=[]
+        
+HRMA=[] 
+HRMB=[] 
+HRMC=[] 
+ke='HRM'
+k=0
+for j in pruebas:
+    p=j.find(ke)
+    
+    if p>=0:
+        
+        p1=j.find('A')
+        if p1>=0:
+            HRMA.append(j)
+            dataas[str(ke+'A')] =np.zeros(len(pruebas))
+        
+        pruebas[k]=str(0)
+
+    k=k+1    
+if len(HRMA)>0:
+    dataas[str(ke+'A')][0:len(HRMA)]=HRMA
+    #pruebas_c=[]
 
 
 
-
-
-
-
+#PARA GRAFICAR########################
+new_c=dataas['PF']                   #   
+new_c=list(new_c[~(new_c==0)])       #   
+                                     #
+new_d=pd.DataFrame()                 #
+new_d=data[new_c]                    #   
+new_d=new_d.dropna()                 #   
+######################################
