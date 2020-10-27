@@ -6,11 +6,11 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtWidgets
 
 # Se importa el .py de la interfaz gráfica
-from Scripts.App_V3.Graficas_menu import *
+from Graficas_menu import *
 
-from Scripts.App_V3.GraphicsComparison import *
-from Scripts.App_V3.Graphic_Data import *
-from Scripts.App_V3.GraphicsView import *
+from GraphicsComparison import *
+from Graphic_Data import *
+from GraphicsView import *
 
 
 class GraphicsMenu(QtWidgets.QMainWindow):
@@ -32,7 +32,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.show()
 
         #Lista con el nombre de las categorias que actualmente estan definidas
-        self.botones = ['PF','HRMA','HRMB','HRMC','I','I0_B','PLTA','PSTA','V','W']
+        self.botones = ['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN','HRMA','HRMB','HRMC','I','V','P']
         
         
         self.info = None #Estructura que recibe los datos del dataframe
@@ -42,25 +42,35 @@ class GraphicsMenu(QtWidgets.QMainWindow):
 
         # Listeners de los botones de la interfaz
         self.ui.PF.clicked.connect(self.graficar)
+        self.ui.THDI.clicked.connect(self.graficar)
+        self.ui.THDV.clicked.connect(self.graficar)
+        self.ui.KF.clicked.connect(self.graficar)
+        self.ui.DP.clicked.connect(self.graficar)
+        self.ui.PST.clicked.connect(self.graficar)
+        self.ui.PLT.clicked.connect(self.graficar)
+        self.ui.WH.clicked.connect(self.graficar)
+        self.ui.UH.clicked.connect(self.graficar)
+        self.ui.QH.clicked.connect(self.graficar)
+        self.ui.VARH.clicked.connect(self.graficar)
+        self.ui.FR.clicked.connect(self.graficar)
+        self.ui.MAG.clicked.connect(self.graficar)
+        self.ui.ANG.clicked.connect(self.graficar)
+        self.ui.IMB.clicked.connect(self.graficar)
+        self.ui.MX.clicked.connect(self.graficar)
+        self.ui.MN.clicked.connect(self.graficar)
         self.ui.HRMA.clicked.connect(self.graficar)
         self.ui.HRMB.clicked.connect(self.graficar)
         self.ui.HRMC.clicked.connect(self.graficar)
         self.ui.I.clicked.connect(self.graficar)
-        self.ui.I0_B.clicked.connect(self.graficar)
-        self.ui.PLTA.clicked.connect(self.graficar)
-        self.ui.PSTA.clicked.connect(self.graficar)
         self.ui.V.clicked.connect(self.graficar)
-        self.ui.W.clicked.connect(self.graficar)
-
+        self.ui.P.clicked.connect(self.graficar)
+        
         #El boton "Perzonalizado..." se coloca activo
-       # self.ui.custom_button.setStyleSheet("border-color: black") 
-       # self.ui.custom_button.setEnabled(True)
-       # self.ui.custom_button.clicked.connect(self.custom)
+        self.ui.custom_button.setStyleSheet("border-color: black") 
+        self.ui.custom_button.setEnabled(True)
+        self.ui.custom_button.clicked.connect(self.custom)
         
         self.ui.backButton.clicked.connect (self.back)
-        
-        
-        
 
     
     #Metodo que recibe la informacion del merge para saber que graficas estarán disponibles y habilitarlas
@@ -69,7 +79,9 @@ class GraphicsMenu(QtWidgets.QMainWindow):
 
     # Metodo para obtener los headers de las columnas del dataframe
     def recuperarColumnas(self):
-        self.headers = self.info.columns.tolist()
+        self.recupedor = Graphic_Data()
+        self.recuperados = self.recupedor.new_gra(self.info)
+        self.headers = self.recuperados.columns.tolist()
        
     # Metodo que evalua que graficas estaran disponibles
     def comparar(self):
@@ -77,13 +89,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
 
         for key in self.botones:
             if key in self.headers:
-                self.variables.append(key)
-            else:
-                new=str(key+'_y')
-                temp = len(new)
-                if new in self.headers:
-                    new2=str(key[:len(new)-2])
-                    self.variables.append(new2)
+                self.variables.append(key)            
         self.categoriasHabilitadas()
     
     #Metodo que se encarga de habilitar las categorias de graficas disponibles
@@ -104,22 +110,61 @@ class GraphicsMenu(QtWidgets.QMainWindow):
             if value == "V":
                 self.ui.V.setStyleSheet("border-color: black")
                 self.ui.V.setEnabled(True)
-            if value == "W":
-                self.ui.W.setStyleSheet("border-color: black")
-                self.ui.W.setEnabled(True)
+            if value == "P":
+                self.ui.P.setStyleSheet("border-color: black")
+                self.ui.P.setEnabled(True)
             if value == "I":
                 self.ui.I.setStyleSheet("border-color: black")
                 self.ui.I.setEnabled(True)
-            if value == "PSTA":
-                self.ui.PSTA.setStyleSheet("border-color: black")
-                self.ui.PSTA.setEnabled(True)
-            if value == "PLTA":
-                self.ui.PLTA.setStyleSheet("border-color: black")
-                self.ui.PLTA.setEnabled(True)
-            if value == "I0_B":
-                self.ui.I0_B.setStyleSheet("border-color: black")
-                self.ui.I0_B.setEnabled(True)
-            
+            if value == "PST":
+                self.ui.PST.setStyleSheet("border-color: black")
+                self.ui.PST.setEnabled(True)
+            if value == "PLT":
+                self.ui.PLT.setStyleSheet("border-color: black")
+                self.ui.PLT.setEnabled(True)
+            if value == "IMB":
+                self.ui.IMB.setStyleSheet("border-color: black")
+                self.ui.IMB.setEnabled(True)
+            if value == "THDI":
+                self.ui.THDI.setStyleSheet("border-color: black")
+                self.ui.THDI.setEnabled(True)
+            if value == "THDV":
+                self.ui.THDV.setStyleSheet("border-color: black")
+                self.ui.THDV.setEnabled(True)
+            if value == "KF":
+                self.ui.KF.setStyleSheet("border-color: black")
+                self.ui.KF.setEnabled(True)
+            if value == "DP":
+                self.ui.DP.setStyleSheet("border-color: black")
+                self.ui.DP.setEnabled(True)
+            if value == "WH":
+                self.ui.WH.setStyleSheet("border-color: black")
+                self.ui.WH.setEnabled(True)
+            if value == "UH":
+                self.ui.UH.setStyleSheet("border-color: black")
+                self.ui.UH.setEnabled(True)
+            if value == "QH":
+                self.ui.QH.setStyleSheet("border-color: black")
+                self.ui.QH.setEnabled(True)
+            if value == "VARH":
+                self.ui.VARH.setStyleSheet("border-color: black")
+                self.ui.VARH.setEnabled(True)
+            if value == "FR":
+                self.ui.FR.setStyleSheet("border-color: black")
+                self.ui.FR.setEnabled(True)
+            if value == "MAG":
+                self.ui.MAG.setStyleSheet("border-color: black")
+                self.ui.MAG.setEnabled(True)
+            if value == "ANG":
+                self.ui.ANG.setStyleSheet("border-color: black")
+                self.ui.ANG.setEnabled(True)
+            if value == "MX":
+                self.ui.MX.setStyleSheet("border-color: black")
+                self.ui.MX.setEnabled(True)
+            if value == "MN":
+                self.ui.MN.setStyleSheet("border-color: black")
+                self.ui.MN.setEnabled(True)    
+    
     #Metodo que llama a la ventana del boton "Personalizado..."
     def custom(self):
         #En el constructor de la clase se pasan como argumento: Esta clase como "parent" y

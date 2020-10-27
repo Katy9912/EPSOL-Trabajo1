@@ -6,8 +6,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import QUrl
 
-from Scripts.App_V3.Graficas_Comparacion import * 
-from Scripts.App_V3.Graphic_Data import Graphic_Data
+from Graficas_Comparacion import * 
+from Graphic_Data import Graphic_Data
 
 
 class GraphicsComparison(QtWidgets.QMainWindow):
@@ -28,7 +28,8 @@ class GraphicsComparison(QtWidgets.QMainWindow):
         self.vData = None #Esta variable almacena la data de la "variable" que se va a graficar
         self.key = "" #Esta variable guarda el nombre de la "variable" que se quiere graficar
         self.plot_list = [] #Esta variable almacena una lista de los archivos html generados
-        
+        self.save_dir = parent.parent.getPath()
+
         #Estas dos lineas siguientes bloquean el boton cerrar de la ventana
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
@@ -41,6 +42,7 @@ class GraphicsComparison(QtWidgets.QMainWindow):
         self.web.resize(1040,500)
         self.web.setZoomFactor(0.8)
         self.data = Graphic_Data()
+        self.data.setPath(path=self.save_dir)
 
         #Se muestra la pantalla (interfaz)
         self.show()
@@ -53,11 +55,12 @@ class GraphicsComparison(QtWidgets.QMainWindow):
     # Para este metodo se necesita comporbar que el metodo "plot" genera la grafica
     def plotVariable(self):
         self.variableData()
-        '''plot_name = self.data.plot(dataframe=self.variableData, key=self.key)
+        '''self.key = self.ui.list_options.currentItem().text()
+        plot_name = self.data.plot(dataframe=self.info, key=self.key)
         self.plot_list.append(plot_name)
         plot_file = os.path.join("file:///" + self.init_dir, plot_name)
-        self.web.load(QUrl(plot_file))'''
-        self.web.show()
+        self.web.load(QUrl(plot_file))
+        self.web.show()'''
 
     #Metodo para obtener el dataframe 
     def setData(self,data):
@@ -67,7 +70,11 @@ class GraphicsComparison(QtWidgets.QMainWindow):
     # En la lista
     def variableData(self):
         self.key = self.ui.list_options.currentItem().text()
+        print ("Llave: " + str(self.key))
         self.vData = self.info[self.key]
+        print("")
+        print ("Data de la llave")
+        print(self.vData)
         
 
     # Metodo del boton "Regresar"

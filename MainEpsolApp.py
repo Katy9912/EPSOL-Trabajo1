@@ -11,13 +11,13 @@ import csv
 
 
 #Se importa el .py de las interfaces gráficas
-from Scripts.App_V3.Main_Window import *
+from Main_Window import *
 
 
 #Se declara el .py de la clase de la ventana a utilizar
 # y de la clase que procesa la información
-from Scripts.App_V3.GraphicsMenu import *
-from Scripts.App_V3.Graphic_Data import *
+from GraphicsMenu import *
+from Graphic_Data import *
 
 #Clase de la pantalla principal
 class MainEpsolApp (QtWidgets.QMainWindow):
@@ -26,20 +26,16 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.ui = Ui_root()
         self.ui.setupUi(self)
         self.show()
-        #self.makeDir()
         self.initial_dir = "../"
+        self.makeDir()
         self.files = None     
-        self.data = None
-        self.band=False
-        self.available = False
+        self.availableMenu = False
         
         #Variable que almacenará los archivos a utilizar en el programa
-        self.files = None
-        
+        self.files = None        
         # Variable que almacenará el merge de los archivos cargados
         self.data = None
 
-        
         #Listeners de los botones de la interfaz principal
         self.ui.load_file_button.clicked.connect(self.loadFiles)
         self.ui.download_file_button.clicked.connect(self.download)
@@ -55,14 +51,19 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.files = QFileDialog.getOpenFileNames(self, "Abrir Archivos", self.initial_dir, "CSV Files (*.csv)") 
         if self.files[0]:
             graph = Graphic_Data()
-            self.data = graph.merge(self.files[0],self.band)
+            self.data = graph.merge(self.files[0])
 
     #Metodo que crea la carpeta nueva para almacenar
     # los archivos de la ejecucion
     def makeDir(self):
-        nombre = datetime.now().strftime('ArchivosAnalizados__%H_%M_%d_%m_%Y') 
-        os.mkdir(nombre)
-        self.initial_dir = os.path.join("../",nombre)
+        
+        nombre = datetime.now().strftime('ArchivosAnalizados_%H_%M_%d_%m_%Y') 
+        self.path =self.initial_dir+nombre+"/"
+        print(self.path)
+        os.mkdir(self.path)
+    
+    def getPath(self):
+        return self.path
 
 
     #Metodo que descarga el csv de la informacion procesada
@@ -72,17 +73,18 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             self.warning()
         else:
             graph = Graphic_Data()
-            self.data=graph.merge(self.files[0],True)
+            self.data=graph.merge(self.files[0])
             self.download = pd.DataFrame(self.data)
             self.nombre = datetime.now().strftime('Dataframe_usado__%H_%M_%d_%m_%Y.csv')
             self.download.to_csv(str(self.nombre), header=True, index=False)
+            self.archivo = shutil.copy(self.nombre,self.path)
+            os.remove(self.nombre)
             self.nota = "Descarga de reporte CSV completa" 
             self.information(anuncio=self.nota)
             
-            
+    #Metodo para generar el reporte Word         
     def generateReport(self):
-        
-        path = "../"       
+        path = self.path       
         lstFiles = []        
         lstDir = os.walk(path)        
  
@@ -115,18 +117,17 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     def availableGraphics(self):
         if self.files:
             if self.files[0]:
-                #Se crea una instancia de GraphicsMenu
-                self.menu = GraphicsMenu(parent=self)
                 #Se manda el merge que se genera con los datos cargados
                 graph = Graphic_Data()
-                self.data = graph.merge(self.files[0],self.band)
-            
+                self.data = graph.merge(self.files[0])
+                #Se crea una instancia de GraphicsMenu
+                self.menu = GraphicsMenu(parent=self)
+                self.availableMenu = True
                 self.menu.cargarData(data=self.data)
                 #Se establecen las opciones de gráficas que estan disponibles
                 #A partir de los archivos cargados
                 self.menu.comparar()
                 #Se muestra interfaz
-                self.available= True
                 self.menu.show()
                
             else:
@@ -138,7 +139,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     
     def closeEvent(self, event):
         if event:
-            if self.available:
+            if self.availableMenu:
                 self.menu.close() 
 
     #Metodo que miestra información de desarrollo
@@ -160,7 +161,6 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         aviso = anuncio
         QMessageBox.information(self, "Aviso!",
                                         str(aviso))
-
 #Main
 if __name__ == "__main__":
     import sys, time, os

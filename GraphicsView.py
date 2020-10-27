@@ -8,9 +8,9 @@ from PyQt5 import QtWidgets
 from PyQt5.QtCore import *
 
 
-from Scripts.App_V3.Graficas_menu import *
-from Scripts.App_V3.Graficas_Window import *
-from Scripts.App_V3.Graphic_Data import * 
+from Graficas_menu import *
+from Graficas_Window import *
+from Graphic_Data import * 
 
 class GraphicsView (QtWidgets.QMainWindow):
     def __init__(self,parent):
@@ -29,8 +29,8 @@ class GraphicsView (QtWidgets.QMainWindow):
 
         #Se muestra la pantalla (interfaz)
         self.show()
-
-        self.init_dir = "../" #Esta variable hace referencia al directorio raiz donde se guardaran las graficas
+        self.init_dir = "../"
+        self.save_dir = parent.parent.getPath() #Esta variable hace referencia al directorio raiz donde se guardaran las graficas
         self.info = None #Esta variable almacena la informacion del dataframe que se usa para graficar
         self.key = "" #Esta variable guarda el nombre de la "variable" que se quiere graficar
         self.plot_list = [] #Esta variable almacena una lista de los archivos html generados
@@ -45,6 +45,7 @@ class GraphicsView (QtWidgets.QMainWindow):
         self.web.setZoomFactor(0.8)
 
         self.data = Graphic_Data()
+        self.data.setPath(path=self.save_dir)
 
     #Metodo que obtiene el dataframe para generar las graficas
     def setData(self,datos):

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1143</width>
+    <width>1281</width>
     <height>624</height>
    </rect>
   </property>
@@ -82,8 +82,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>330</y>
+      <x>650</x>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -136,44 +136,14 @@ QPushButton:pressed {
      <string>Armónicos A</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="thd_button">
+   <widget class="QPushButton" name="P">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>330</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Muestra las gráficas</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>THD</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="W">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>860</x>
-      <y>260</y>
+      <x>1070</x>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -212,14 +182,14 @@ QPushButton:pressed {
      <string/>
     </property>
    </widget>
-   <widget class="QPushButton" name="energy_W_button">
+   <widget class="QPushButton" name="WH">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>330</y>
+      <x>440</x>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -248,8 +218,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>400</y>
+      <x>1070</x>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -273,44 +243,14 @@ QPushButton:pressed {
      <string>Voltaje</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="I">
+   <widget class="QPushButton" name="FR">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>400</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Genera reporte en word</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>Corriente</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="frecuency_button">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>260</y>
+      <x>860</x>
+      <y>120</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -333,7 +273,7 @@ QPushButton:pressed {
      <string>Frecuencia</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="harmonic_distortion_button">
+   <widget class="QPushButton" name="THDI">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -360,17 +300,17 @@ QPushButton:pressed {
      <string notr="true">border-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>Distorsión Armónica</string>
+     <string>Distorsión Armónica de Corriente</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="k_factor_button">
+   <widget class="QPushButton" name="KF">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>440</x>
-      <y>400</y>
+      <x>650</x>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -393,97 +333,7 @@ QPushButton:pressed {
      <string>Factor K</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="potency_distortion_factor_button">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>440</x>
-      <y>260</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Genera reporte en word</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>Factor de Distorsión de Potencia</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="voltage_unbalance_button">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>190</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Genera reporte en word</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>Desbalance de Voltaje</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="I0_B">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>230</x>
-      <y>120</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Genera reporte en word</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>Desbalance de Corriente</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="PLTA">
+   <widget class="QPushButton" name="DP">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -510,16 +360,16 @@ QPushButton:pressed {
      <string notr="true">border-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>Flicker PLTA</string>
+     <string>Factor de Distorsión de Potencia</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="current_magnitude_button">
+   <widget class="QPushButton" name="IMB">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
+      <x>230</x>
       <y>190</y>
       <width>190</width>
       <height>40</height>
@@ -540,10 +390,70 @@ QPushButton:pressed {
      <string notr="true">border-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>Magnitud de Corriente</string>
+     <string>Desbalance de Corriente/Voltaje</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="current_angle_button">
+   <widget class="QPushButton" name="PLT">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>330</y>
+      <width>190</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Genera reporte en word</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Flicker PLTA</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MAG">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>1070</x>
+      <y>120</y>
+      <width>190</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Genera reporte en word</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Magnitud de Corriente/Voltaje</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="ANG">
     <property name="enabled">
      <bool>false</bool>
     </property>
@@ -570,77 +480,16 @@ QPushButton:pressed {
      <string notr="true">border-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>Ángulo de Corriente</string>
+     <string>Ángulo de Corriente/Voltaje</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="potency_history_button">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>400</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Genera reporte en word</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);</string>
-    </property>
-    <property name="text">
-     <string>Histórico de Potencia</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="voltage_history_button">
+   <widget class="QPushButton" name="MN">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>860</x>
-      <y>120</y>
-      <width>190</width>
-      <height>40</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <family>Arial</family>
-     </font>
-    </property>
-    <property name="cursor">
-     <cursorShape>PointingHandCursor</cursorShape>
-    </property>
-    <property name="toolTip">
-     <string>Genera reporte en word</string>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border-color: rgb(255, 0, 0);
-</string>
-    </property>
-    <property name="text">
-     <string>Histórico de Voltaje</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="current_history_button">
-    <property name="enabled">
-     <bool>false</bool>
-    </property>
-    <property name="geometry">
-     <rect>
-      <x>650</x>
       <y>330</y>
       <width>190</width>
       <height>40</height>
@@ -661,7 +510,37 @@ QPushButton:pressed {
      <string notr="true">border-color: rgb(255, 0, 0);</string>
     </property>
     <property name="text">
-     <string>Histórico de Corriente</string>
+     <string>Mínimos Históricos</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="MX">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>260</y>
+      <width>190</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Genera reporte en word</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Máximos Históricos</string>
     </property>
    </widget>
    <widget class="QPushButton" name="custom_button">
@@ -670,8 +549,8 @@ QPushButton:pressed {
     </property>
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>470</y>
+      <x>1070</x>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -694,14 +573,14 @@ QPushButton:pressed {
      <string>Personalizado...</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="energy_U_button">
+   <widget class="QPushButton" name="UH">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>400</y>
+      <x>440</x>
+      <y>190</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -724,14 +603,14 @@ QPushButton:pressed {
      <string>Energía Aparente</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="energy_Q_button">
+   <widget class="QPushButton" name="QH">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>120</y>
+      <y>260</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -754,14 +633,14 @@ QPushButton:pressed {
      <string>Energía Reactiva</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="energy_VAR_button">
+   <widget class="QPushButton" name="VARH">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
       <x>440</x>
-      <y>190</y>
+      <y>330</y>
       <width>190</width>
       <height>40</height>
      </rect>
@@ -814,13 +693,13 @@ QPushButton:pressed {
      <string>Armónicos C</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="PSTA">
+   <widget class="QPushButton" name="PST">
     <property name="enabled">
      <bool>false</bool>
     </property>
     <property name="geometry">
      <rect>
-      <x>650</x>
+      <x>860</x>
       <y>190</y>
       <width>190</width>
       <height>40</height>
@@ -906,6 +785,66 @@ border-color: rgb(32, 112, 137);</string>
      </size>
     </property>
    </widget>
+   <widget class="QPushButton" name="I">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>120</y>
+      <width>190</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Genera reporte en word</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Corriente</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="THDV">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>230</x>
+      <y>330</y>
+      <width>190</width>
+      <height>40</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+     </font>
+    </property>
+    <property name="cursor">
+     <cursorShape>PointingHandCursor</cursorShape>
+    </property>
+    <property name="toolTip">
+     <string>Genera reporte en word</string>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 0, 0);</string>
+    </property>
+    <property name="text">
+     <string>Distorsión Armónica de Voltaje</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionAbout">
@@ -915,31 +854,27 @@ border-color: rgb(32, 112, 137);</string>
   </action>
  </widget>
  <tabstops>
-  <tabstop>thd_button</tabstop>
-  <tabstop>W</tabstop>
-  <tabstop>energy_W_button</tabstop>
+  <tabstop>P</tabstop>
+  <tabstop>WH</tabstop>
   <tabstop>V</tabstop>
   <tabstop>HRMA</tabstop>
-  <tabstop>I</tabstop>
-  <tabstop>frecuency_button</tabstop>
-  <tabstop>harmonic_distortion_button</tabstop>
-  <tabstop>k_factor_button</tabstop>
-  <tabstop>potency_distortion_factor_button</tabstop>
-  <tabstop>voltage_unbalance_button</tabstop>
-  <tabstop>I0_B</tabstop>
-  <tabstop>PLTA</tabstop>
-  <tabstop>current_magnitude_button</tabstop>
+  <tabstop>FR</tabstop>
+  <tabstop>THDI</tabstop>
+  <tabstop>KF</tabstop>
+  <tabstop>DP</tabstop>
+  <tabstop>IMB</tabstop>
+  <tabstop>PLT</tabstop>
+  <tabstop>MAG</tabstop>
   <tabstop>PF</tabstop>
-  <tabstop>potency_history_button</tabstop>
-  <tabstop>voltage_history_button</tabstop>
-  <tabstop>current_angle_button</tabstop>
-  <tabstop>current_history_button</tabstop>
+  <tabstop>MN</tabstop>
+  <tabstop>ANG</tabstop>
+  <tabstop>MX</tabstop>
   <tabstop>custom_button</tabstop>
-  <tabstop>energy_U_button</tabstop>
-  <tabstop>energy_Q_button</tabstop>
-  <tabstop>energy_VAR_button</tabstop>
+  <tabstop>UH</tabstop>
+  <tabstop>QH</tabstop>
+  <tabstop>VARH</tabstop>
   <tabstop>HRMC</tabstop>
-  <tabstop>PSTA</tabstop>
+  <tabstop>PST</tabstop>
   <tabstop>HRMB</tabstop>
   <tabstop>backButton</tabstop>
  </tabstops>
