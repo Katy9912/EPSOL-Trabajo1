@@ -1,0 +1,14 @@
+<RCC>
+  <qresource prefix="EPSOL_ICO">
+    <file>LogoEpsol.ico</file>
+  </qresource>
+  <qresource prefix="BUTTONS">
+    <file>back_icon.png</file>
+  </qresource>
+  <qresource prefix="EPSOL">
+    <file>LogoEpsolCMYK.png</file>
+  </qresource>
+  <qresource prefix="EPSOL_LOGO">
+    <file>LogoEpsol.png</file>
+  </qresource>
+</RCC>
