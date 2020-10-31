@@ -121,6 +121,7 @@ def new_gra(data):
     pruebas_c=[]
     for i in keys:    
         k=0    
+        
         for j in pruebas:
             p=j.find(i)
             
@@ -131,7 +132,11 @@ def new_gra(data):
         
             k=k+1    
         if len(pruebas_c)>0:
-            dataas[i][0:len(pruebas_c)]=pruebas_c
+            
+            
+            dataas.loc[0:len(pruebas_c)-1,i]=pruebas_c
+        
+            #dataas[i][0:len(pruebas_c)]=pruebas_c
             pruebas_c=[]
             
     HRMA=[] 
@@ -165,18 +170,31 @@ def new_gra(data):
     
         k=k+1    
     if len(HRMA)>0:
-        dataas[str(keys+'A')][0:len(HRMA)]=HRMA
+        
+        
+        i=str(keys+'A')
+        dataas.loc[0:len(HRMA)-1,i]=HRMA
+        
+        #dataas[str(keys+'A')][0:len(HRMA)]=str(0)
+        #dataas[str(keys+'A')][0:len(HRMA)]=HRMA
         HRMA=[] 
     if len(HRMB)>0:
-        dataas[str(keys+'B')][0:len(HRMB)]=HRMB
+        i=str(keys+'B')
+        dataas.loc[0:len(HRMB)-1,i]=HRMB
+        
+        #dataas[str(keys+'B')][0:len(HRMB)]=HRMB
         HRMB=[] 
     if len(HRMC)>0:
-        dataas[str(keys+'C')][0:len(HRMC)]=HRMC
+        
+        i=str(keys+'C')
+        dataas.loc[0:len(HRMC)-1,i]=HRMC
+        #dataas[str(keys+'C')][0:len(HRMC)]=HRMC
         HRMC=[] 
     
     keys=['I','V']
     pruebas_c=[]
     for i in keys:    
+        
         k=0    
         for j in pruebas:
             p=j.find(i)
@@ -188,17 +206,20 @@ def new_gra(data):
         
             k=k+1    
         if len(pruebas_c)>0:
-            dataas[i][0:len(pruebas_c)]=pruebas_c
+            
+            dataas.loc[0:len(pruebas_c)-1,i]=pruebas_c
+            #dataas[i][0:len(pruebas_c)]=pruebas_c
             pruebas_c=[]
             
     dataas['P'] =np.zeros(len(pruebas))
+    
     pruebas=list(filter(lambda x: x != str(0), pruebas))
     if len(pruebas)>0:
         
-        dataas['P'][0:len(pruebas)]=pruebas
+        #dataas['P'][0:len(pruebas)]=pruebas
+        dataas.loc[0:len(pruebas)-1,'P']=pruebas
     else:
-        del dataas['P']
-    
+        del dataas['P']           
     return dataas
 
      
@@ -293,5 +314,71 @@ data = merge(filenames,True)
 key='HRMA'
 name= plot(data,key)
 
-personal=[]
 
+#Dos botones, uno que diga generar gráfica y otro que diga nueva gráfica
+# donde el boton de generar gráfica va a mandar confirmación y va a utilizar el arreglo
+# para graficar las categorias seleccionadas
+#mientras que el boton de nueva gráfica va 
+
+
+
+
+#un boton de nueva grafica que cuando se seleccione se genera gráfica, pero cuando termina el 
+#el proceso se limpia el arreglo con eso cada vez que se grafica se limpia sin problema, se 
+#deshabilita el botón de gráfica nueva mientras sale la gráfica ya que sale la gráfica se vuelve a 
+#habilitar
+personal=['PFT3']
+personal.append('LDPFT3')
+
+
+def plot2(dataframe, personal_a):
+        from bokeh.plotting import figure, output_file, save
+        from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
+        from bokeh.io import output_notebook, show
+        from bokeh.palettes import Spectral4, Category20_20
+        from bokeh.io import export_png        
+
+        data = dataframe.copy()      
+        #dataas=new_gra(data)
+        #new_c=dataas[key]                   #   
+        #new_c=list(new_c[~(new_c==0)])       #   
+                                             #
+        #new_d=pd.DataFrame()                 #
+        #new_d=data[new_c]                    #   
+        
+        new_c=data[personal_a]
+        final=new_c.dropna()     
+        
+        #final = new_file.dropna()    
+        #final = data.loc[categorias[key]].dropna()
+        #final = data[categorias[key]].dropna()
+        
+        tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
+        bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
+                    sizing_mode="scale_width", title=key, tools=tools)
+        bp.toolbar.autohide = True
+
+
+        for column, color in zip(list(final), Category20_20):
+            
+            cds = ColumnDataSource(final)
+            a = bp.circle(x='Datetime', y=column, source=cds, fill_alpha=0.0, line_alpha=0.0, size=5)
+            bp.step(x='Datetime', y=column, source=cds, mode="after", line_color=color, legend_label=column)
+            hover = HoverTool(
+                tooltips=[
+                    ("Datetime", "@Datetime{%Y-%m-%d %H:%M:%S}"), (column, f"@{column}")
+                        ],
+                formatters={"@Datetime": "datetime"}, mode='vline', renderers=[a], toggleable=False)
+
+            bp.add_tools(hover)
+
+        bp.legend.location = "top_left"
+        bp.legend.click_policy = "hide"
+        plot_name = str(f'{key} -plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + ".html")   
+
+        output_file(plot_name, title=key, mode="cdn")
+        save(bp)
+        #se demora mucho cuando va a exportar
+        #filen=str('./Imagenes/'+key+'.png')
+        #export_png(bp, filename=filen, height=6, width=8)
+        return plot_name
