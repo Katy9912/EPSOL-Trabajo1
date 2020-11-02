@@ -72,8 +72,7 @@ class Graphic_Data:
         for i in keys:    
             k=0    
             for j in pruebas:
-                p=j.find(i)
-                
+                p = j.find(i)
                 if p>=0:            
                     pruebas_c.append(j)
                     dataas[i] =np.zeros(len(pruebas))            
@@ -207,7 +206,28 @@ class Graphic_Data:
         
         return merge
     
-    
+    #Metodo que permite obtener la lista de todas las variables
+    #Disponibles para graficar
+    def optionsToGraph(self, dataframe):
+
+        graph = []
+        data = dataframe.copy()
+        dataas=self.new_gra(data)
+        
+        dataas_list = dataas.columns.tolist()
+        #if "PF" in dataas_list:
+        #    dataas_list.remove("PF")
+
+        for c in dataas_list:
+            new_list = dataas[c]
+            new_list = list(new_list[~(new_list==0)])
+            for element in new_list:
+                graph.append(element)
+
+        return graph
+
+       
+
 
     #Funcion generadora de graficas
     def plot(self, dataframe, key):
@@ -217,17 +237,14 @@ class Graphic_Data:
         from bokeh.palettes import Spectral4, Category20_20
         from bokeh.io import export_png        
 
-        #data = dataframe.copy()      
-        #final = data[self.mediciones_dict[key]].dropna()  
-        data = dataframe.copy()      
+        data = dataframe.copy()
         dataas=self.new_gra(data)
-        new_c=dataas[key]                   #   
-        new_c=list(new_c[~(new_c==0)])       #   
-                                             #
+        new_c=dataas[key]        #   
+        new_c=list(new_c[~(new_c==0)])        #                       
         new_d=pd.DataFrame()                 #
-        new_d=data[new_c]                    #   
-        final=new_d.dropna()     
-        
+        new_d=data[new_c]                      #   
+        final=new_d.dropna()              #
+           
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
         bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
                     sizing_mode="scale_width", title=key, tools=tools)
@@ -258,6 +275,54 @@ class Graphic_Data:
         #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         #shutil.copy(plot_name,self.path)
         return plot_name
+
+    def plotVariable(self, dataframe, variables):
+        from bokeh.plotting import figure, output_file, save
+        from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
+        from bokeh.io import output_notebook, show
+        from bokeh.palettes import Spectral4, Category20_20
+        from bokeh.io import export_png        
+        
+        var = variables
+        data = dataframe.copy()
+        new_d=pd.DataFrame()                 #
+        new_d=data[var]
+        if new_d.isnull().values.any():                      #   
+            final=new_d.fillna(value=0)
+        else:
+            final=new_d
+        tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
+        bp = figure(width=500, height=280, x_axis_type="datetime", toolbar_location='right',
+                    sizing_mode="scale_width", title="Customized", tools=tools)
+        bp.toolbar.autohide = True
+
+
+        for column, color in zip(list(final), Category20_20):
+            
+            cds = ColumnDataSource(final)
+            a = bp.circle(x='Datetime', y=column, source=cds, fill_alpha=0.0, line_alpha=0.0, size=5)
+            bp.step(x='Datetime', y=column, source=cds, mode="after", line_color=color, legend_label=column)
+            hover = HoverTool(
+                tooltips=[
+                    ("Datetime", "@Datetime{%Y-%m-%d %H:%M:%S}"), (column, f"@{column}")
+                        ],
+                formatters={"@Datetime": "datetime"}, mode='vline', renderers=[a], toggleable=False)
+
+            bp.add_tools(hover)
+
+        bp.legend.location = "top_left"
+        bp.legend.click_policy = "hide"
+        plot_name = str('CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + ".html")   
+
+        output_file(plot_name, title="customized", mode="cdn")
+        save(bp)
+        #se demora mucho cuando va a exportar
+        #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
+        #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
+        #shutil.copy(plot_name,self.path)
+        return plot_name         
+
+        
 
 
 if __name__ == "__main__":

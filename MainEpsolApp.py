@@ -5,6 +5,7 @@ import os
 import docx
 from docx import Document
 import shutil
+from time import *
 
 from datetime import datetime
 import csv
@@ -28,8 +29,13 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.show()
         self.initial_dir = "../"
         self.makeDir()
-        self.files = None     
+        self.createdFiles = [] # Esta lista almacena todos los html generados para eliminarlos al cerrar la app 
+        
+        #Estas variables sirven para saber si hay ventanas abiertas y cerrarlas al cerrar la app
         self.availableMenu = False
+        self.availableView = False
+        self.availableCustomized = False
+
         
         #Variable que almacenará los archivos a utilizar en el programa
         self.files = None        
@@ -61,11 +67,32 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.path =self.initial_dir+nombre+"/"
         print(self.path)
         os.mkdir(self.path)
-    
+
+    #Devuelve el path de la carpeta generada para guardar los documentos
+    #NOTA: EN ESTA VERSION AUNQUE SE LLAMA EN OTRAS CLASES NO SE OCUPA MAS QUE EN LAS
+    #FUNCIONES QUE GENERAN LOS REPORTES
     def getPath(self):
         return self.path
 
+    #Estos metodos reciben la señal si hay ventanas abiertas y su referencia
+    def setAvailableMenu(self, available, screen):
+        self.availableMenu = available
+        self.son = screen
+    def setAvailableView(self, available, screen):
+        self.availableView = available
+        self.grandson_1 = screen
+    def setAvailableCustomized(self, available, screen):
+        self.availableCustomized = available
+        self.grandson_2 = screen
 
+    #Este metodo recibe cada html generado y lo almacena en una lista
+    def setFiles(self, files):
+        doc = files
+        self.createdFiles.append(doc)
+        print("Lista de archivos: ")
+        print(self.createdFiles)
+        print("")
+    
     #Metodo que descarga el csv de la informacion procesada
     def download(self):
     
@@ -82,7 +109,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             self.nota = "Descarga de reporte CSV completa" 
             self.information(anuncio=self.nota)
             
-    #Metodo para generar el reporte Word         
+    #Metodo para generar el reporte Word       
     def generateReport(self):
         path = self.path       
         lstFiles = []        
@@ -122,7 +149,6 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                 self.data = graph.merge(self.files[0])
                 #Se crea una instancia de GraphicsMenu
                 self.menu = GraphicsMenu(parent=self)
-                self.availableMenu = True
                 self.menu.cargarData(data=self.data)
                 #Se establecen las opciones de gráficas que estan disponibles
                 #A partir de los archivos cargados
@@ -137,11 +163,24 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             #Se muestra señal de emergencia
             self.warning()
     
+    #Metodo que opera al cerrar la venta principal
     def closeEvent(self, event):
         if event:
-            if self.availableMenu:
-                self.menu.close() 
-
+            #Cierra las ventanas secundarias si estan abiertas
+            for i in range(3):
+                if self.availableMenu:
+                    self.son.close()
+                if self.availableView:
+                    self.grandson_1.close()
+                if self.availableCustomized:
+                    self.grandson_2.close()
+            print("Archivos a borrar: ")
+            print(self.createdFiles)
+            #Borra los html generados durante la ejecucion
+            for file in self.createdFiles:
+                os.remove(file)
+               
+        
     #Metodo que miestra información de desarrollo
     def info(self):
         QMessageBox.about(self, "Informacion del programa",

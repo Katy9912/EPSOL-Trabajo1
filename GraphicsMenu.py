@@ -21,6 +21,9 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         # Es necesaria para la interaccion de los botones 
         self.parent = parent
 
+        #Esta variable manda la señal y referencia si esta abierta
+        self.parent.setAvailableMenu(available=True, screen=self)
+
         self.ui = Ui_graphics_menu()
         self.ui.setupUi(self)
         
@@ -89,7 +92,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
 
         for key in self.botones:
             if key in self.headers:
-                self.variables.append(key)            
+                self.variables.append(key)      
         self.categoriasHabilitadas()
     
     #Metodo que se encarga de habilitar las categorias de graficas disponibles
@@ -169,10 +172,11 @@ class GraphicsMenu(QtWidgets.QMainWindow):
     def custom(self):
         #En el constructor de la clase se pasan como argumento: Esta clase como "parent" y
         # La lista de headers como "variables"
-        self.custom = GraphicsComparison(parent=self,variables=self.headers)
+        self.custom = GraphicsComparison(parent=self)
         
         #Se pasa el dataframe generado para graficar
         self.custom.setData(data=self.info)
+        self.custom.createList()
         self.custom.show()
     
     #Metodo que llama a la interfaz para ver las grafica generada de la categoria seleccionada

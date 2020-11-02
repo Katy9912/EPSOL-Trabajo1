@@ -20,6 +20,9 @@ class GraphicsView (QtWidgets.QMainWindow):
         #Esta variable guarda referencia a la interfaz "parent" de esta interfaz
         # Es necesaria para la interaccion de los botones 
         self.parent = parent
+
+        #Esta variable manda la señal y referencia si esta abierta
+        self.parent.parent.setAvailableView(available=True, screen=self)
         
         self.ui.setupUi(self)
         
@@ -33,7 +36,7 @@ class GraphicsView (QtWidgets.QMainWindow):
         self.save_dir = parent.parent.getPath() #Esta variable hace referencia al directorio raiz donde se guardaran las graficas
         self.info = None #Esta variable almacena la informacion del dataframe que se usa para graficar
         self.key = "" #Esta variable guarda el nombre de la "variable" que se quiere graficar
-        self.plot_list = [] #Esta variable almacena una lista de los archivos html generados
+        
 
         #Listeners de los botones "Regresar" e "Inicio"
         self.ui.backButton.clicked.connect(self.back)
@@ -57,7 +60,7 @@ class GraphicsView (QtWidgets.QMainWindow):
     #Metodo que genera la grafica
     def plotitem(self):
         plot_name = self.data.plot(dataframe=self.info, key=self.key)
-        self.plot_list.append(plot_name)
+        self.parent.parent.setFiles(files=plot_name) #Este método almacena una lista de los archivos html generados
         plot_file = os.path.join("file:///" + self.init_dir, plot_name)
         self.web.load(QUrl(plot_file))
         self.web.show()
@@ -77,11 +80,3 @@ class GraphicsView (QtWidgets.QMainWindow):
         self.parent.close()
         #Muestra la interfaz padre.padre(Menu Principal)
         self.parent.parent.raise_()
-        
-    #Metodo que elimina los archivos html generados al momento de cerrar la ventana
-    def closeEvent(self, event):
-        if event:
-            if self.plot_list:
-                for file in self.plot_list:
-                    os.remove(file)
-                    self.plot_list.remove(file)
