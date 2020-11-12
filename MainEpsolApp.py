@@ -97,7 +97,8 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     def download(self):
     
         if self.data is None:
-            self.warning()
+            aviso= "No existen archivos cargados"
+            self.warning(anuncio=aviso)
         else:
             graph = Graphic_Data()
             self.data=graph.merge(self.files[0])
@@ -106,38 +107,47 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             self.download.to_csv(str(self.nombre), header=True, index=False)
             self.archivo = shutil.copy(self.nombre,self.path)
             os.remove(self.nombre)
-            self.nota = "Descarga de reporte CSV completa" 
-            self.information(anuncio=self.nota)
+            nota = "Descarga de reporte CSV completa" 
+            self.information(anuncio=nota)
             
     #Metodo para generar el reporte Word       
     def generateReport(self):
-        path = self.path       
-        lstFiles = []        
-        lstDir = os.walk(path)        
- 
-        for root, dirs, files in lstDir:
-            for fichero in files:
-                (nombreFichero, extension) = os.path.splitext(fichero)
-                if(extension == ".png"):
-                    lstFiles.append(nombreFichero+extension)
-               
-        for f in lstFiles:            
-            try:
-                doc = docx.Document('test.docx')
-                #doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(10), height=docx.shared.Cm(5))
-                doc.add_picture(str(path+'\\'+f))
-                doc.save('test.docx')
-            except Exception as e: 
+        if self.data is None:
+            aviso= "No existen archivos cargados"
+            self.warning(anuncio=aviso)
+        else:
+            path = self.path       
+            lstFiles = []        
+            lstDir = os.walk(path)        
     
-                print(e,"Generando archivo .docx")            
-                document = Document()
-                document.save('test.docx')
-                doc = docx.Document('test.docx')
-                doc.add_picture(str(path+'\\'+f))
-                
-                doc.save('test.docx')    
-        print("Archivo finalizado")        
+            for root, dirs, files in lstDir:
+                for fichero in files:
+                    (nombreFichero, extension) = os.path.splitext(fichero)
+                    if(extension == ".png"):
+                        lstFiles.append(nombreFichero+extension)
+            if len(lstFiles) == 0:
+                aviso="No se ha generado ninguna gráfica"
+                self.warning(anuncio=aviso)
+            else:  
+                for f in lstFiles:            
+                    try:
+                        doc = docx.Document(path+'\\'+'test.docx')
+                        #doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(10), height=docx.shared.Cm(5))
+                        doc.add_picture(str(path+'\\'+f))
+                        doc.save(path+'\\'+'test.docx')
+                    except Exception as e: 
             
+                        print(e,"Generando archivo .docx")            
+                        document = Document()
+                        document.save(path+'\\'+'test.docx')
+                        doc = docx.Document(path+'\\'+'test.docx')
+                        doc.add_picture(str(path+'\\'+f))
+                        
+                        doc.save(path+'\\'+'test.docx') 
+                nota = "Descarga de reporte WORD completa" 
+                self.information(anuncio=nota)
+                print("Archivo finalizado")        
+                
             
 
     #Metodo que muestra el menu de las gráficas disponibles
@@ -158,10 +168,12 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                
             else:
                 #Se muestra señal de emergencia
-                self.warning()
+                aviso= "No existen archivos cargados"
+                self.warning(anuncio=aviso)
         else:
             #Se muestra señal de emergencia
-            self.warning()
+            aviso= "No existen archivos cargados"
+            self.warning(anuncio=aviso)
     
     #Metodo que opera al cerrar la venta principal
     def closeEvent(self, event):
@@ -174,8 +186,6 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                     self.grandson_1.close()
                 if self.availableCustomized:
                     self.grandson_2.close()
-            print("Archivos a borrar: ")
-            print(self.createdFiles)
             #Borra los html generados durante la ejecucion
             for file in self.createdFiles:
                 os.remove(file)
@@ -192,8 +202,8 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                           "De Los Santos Castro \nPara: EPSOL SA de CV")
 
     #Metodo que muestra el mensaje de advertencia sobre datos inexistentes
-    def warning(self):
-        QMessageBox.warning(self, "Advertencia!", "No existen archivos cargados", buttons=QMessageBox.Ok)
+    def warning(self,anuncio):
+        QMessageBox.warning(self, "Advertencia!",str(anuncio), buttons=QMessageBox.Ok)
 
     #Metodo que muestra el mensaje de aviso si se descarga el csv o se genera el word
     def information(self, anuncio):

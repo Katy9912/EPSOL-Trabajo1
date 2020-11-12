@@ -14,10 +14,10 @@ import csv
 import shutil
 
 #Libreria para exportar png de grafica
-#from selenium.webdriver import Chrome, ChromeOptions
-#options=ChromeOptions()
-#options.add_argument('--headless')
-#web_driver=Chrome(executable_path='chromedriver_win32\chromedriver.exe',options=options)
+from selenium.webdriver import Chrome, ChromeOptions
+options=ChromeOptions()
+options.add_argument('--headless')
+web_driver=Chrome(executable_path='C:\\EPSOL_APP\\chromedriver.exe',options=options)
 
 
     
@@ -64,90 +64,74 @@ class Graphic_Data:
         self.path = path
 
     def new_gra(self,data):
-
+        
         keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN']
-        pruebas=list(data.columns)
         dataas=pd.DataFrame()
-        pruebas_c=[]
-        for i in keys:    
-            k=0    
-            for j in pruebas:
-                p = j.find(i)
-                if p>=0:            
-                    pruebas_c.append(j)
-                    dataas[i] =np.zeros(len(pruebas))            
-                    pruebas[k]=str(0)
-            
-                k=k+1    
-            if len(pruebas_c)>0:
-                dataas[i][0:len(pruebas_c)]=pruebas_c
-                pruebas_c=[]
-                
-        HRMA=[] 
-        HRMB=[] 
-        HRMC=[] 
+        back=list(data.columns)
+        df=data.copy()
         
         
-        keys='HRM'
-        k=0
-        for j in pruebas:
-            p=j.find(keys)
-            
-            if p>=0:
-                
-                p1=j.find('A')
-                if p1>=0:
-                    HRMA.append(j)
-                    dataas[str(keys+'A')] =np.zeros(len(pruebas))
-                else:
-                    p1=j.find('B')
-                    if p1>=0:
-                        HRMB.append(j)
-                        dataas[str(keys+'B')] =np.zeros(len(pruebas))
-                    else: 
-                        p1=j.find('C')
-                        if p1>=0:
-                            HRMC.append(j)
-                            dataas[str(keys+'C')] =np.zeros(len(pruebas))
+        np.shape(df)[1]
+        for j in keys:
+            if np.shape(df)[1] >0:
+                prueba=df.columns.str.contains(str(j))
+                prueba1=list(df.columns[prueba])
+                if len(prueba1)>0:
+                    dataas[j] =np.zeros(len(back))                
+                    dataas.loc[0:len(prueba1)-1,j]=prueba1
+                    for i in prueba1:
+                        del df[i]
+            else:
+                break            
                     
-                pruebas[k]=str(0)
-        
-            k=k+1    
-        if len(HRMA)>0:
-            dataas[str(keys+'A')][0:len(HRMA)]=HRMA
-            HRMA=[] 
-        if len(HRMB)>0:
-            dataas[str(keys+'B')][0:len(HRMB)]=HRMB
-            HRMB=[] 
-        if len(HRMC)>0:
-            dataas[str(keys+'C')][0:len(HRMC)]=HRMC
-            HRMC=[] 
-        
-        keys=['I','V']
-        pruebas_c=[]
-        for i in keys:    
-            k=0    
-            for j in pruebas:
-                p=j.find(i)
-                
-                if p>=0:            
-                    pruebas_c.append(j)
-                    dataas[i] =np.zeros(len(pruebas))            
-                    pruebas[k]=str(0)
+        if np.shape(df)[1] >0:
+            keys='HRM'
             
-                k=k+1    
-            if len(pruebas_c)>0:
-                dataas[i][0:len(pruebas_c)]=pruebas_c
-                pruebas_c=[]
-                
-        dataas['P'] =np.zeros(len(pruebas))
-        pruebas=list(filter(lambda x: x != str(0), pruebas))
-        if len(pruebas)>0:
             
-            dataas['P'][0:len(pruebas)]=pruebas
-        else:
-            del dataas['P']
-
+            prueba=df.columns.str.contains('HRM')
+            prueba1=df.loc[:,prueba]
+            
+            hrma=list(prueba1.columns[prueba1.columns.str.contains('A')])
+            hrmb=list(prueba1.columns[prueba1.columns.str.contains('B')])
+            hrmc=list(prueba1.columns[prueba1.columns.str.contains('C')])
+            
+            if len(hrma)>0:
+                dataas[str(keys+'A')] =np.zeros(len(back))
+                dataas.loc[0:len(hrma)-1,str(keys+'A')]=hrma
+                for i in hrma:
+                        del df[i]
+                        
+            if len(hrmb)>0:
+                dataas[str(keys+'B')] =np.zeros(len(back))
+                dataas.loc[0:len(hrmb)-1,str(keys+'B')]=hrmb
+                for i in hrmb:
+                        del df[i]
+                        
+            if len(hrmc)>0:
+                dataas[str(keys+'C')] =np.zeros(len(back))
+                dataas.loc[0:len(hrmc)-1,str(keys+'C')]=hrmc
+                for i in hrmc:
+                        del df[i]
+                        
+        if np.shape(df)[1] >0:
+            keys=['I','V']
+            for j in keys:
+                prueba=df.columns.str.contains(str(j))
+                prueba1=list(df.columns[prueba])
+                if len(prueba1)>0:
+                    dataas[j] =np.zeros(len(back))                
+                    dataas.loc[0:len(prueba1)-1,j]=prueba1
+                    for i in prueba1:
+                        del df[i]
+        if np.shape(df)[1] >0:
+            back2=list(df.columns)
+            if len(back2)>0:
+                dataas['P'] =np.zeros(len(back))
+                power=list(df.columns)
+                dataas.loc[0:len(power)-1,'P']=power
+                
+                  
+                
         return dataas
 
     #Función que limpia los cvs
@@ -270,6 +254,8 @@ class Graphic_Data:
 
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
+        filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
+        export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         #se demora mucho cuando va a exportar
         #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
         #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
@@ -316,6 +302,8 @@ class Graphic_Data:
 
         output_file(plot_name, title="customized", mode="cdn")
         save(bp)
+        filen=str(self.path+'CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S")+'.png') #ACUERDATE DE CAMBIARLO
+        export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         #se demora mucho cuando va a exportar
         #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
         #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
