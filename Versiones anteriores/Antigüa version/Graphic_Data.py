@@ -11,6 +11,7 @@ import pandas as pd
 import numpy as np
 from functools import reduce
 import csv
+import cv2
 from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
 options.add_argument('--headless')
@@ -245,7 +246,7 @@ class Graphic_Data:
         final=new_d.dropna()     
         
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-        bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
+        bp = figure(width=300, height=300, x_axis_type="datetime", toolbar_location='right',
                     sizing_mode="scale_width", title=key, tools=tools)
         bp.toolbar.autohide = True
 
@@ -270,8 +271,13 @@ class Graphic_Data:
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
         #se demora mucho cuando va a exportar
-        #filen=str('./Imagenes/'+key+'.png')
-        #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
+        print("exportando")
+        filen=str('./Imagenes/'+key+'1.png')
+        export_png(bp, filename=filen,height=12000, width=12000,webdriver=web_driver)
+        #export_png(bp, filename=filen,webdriver=web_driver)
+        #image1 = cv2.imread(plot_name)
+        #imagen1=cv2.resize(image1, dsize=(1200, 1200))    
+        #cv2.imwrite(filen,imagen1) 
         return plot_name
 
 

@@ -309,7 +309,9 @@ data = merge(filenames,True)
             
             
 #keys     =['PF','THDI']
-keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN']
+#keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN']
+#keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB']
+keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR']
 dataas=pd.DataFrame()
 back=list(data.columns)
 df=data.copy()
@@ -327,6 +329,80 @@ for j in keys:
                 del df[i]
     else:
         break            
+
+if np.shape(df)[1] >0:
+    keys='MAG'
+    
+    
+    prueba=df.columns.str.contains('MAG')
+    prueba1=df.loc[:,prueba]
+    
+    hrma=list(prueba1.columns[prueba1.columns.str.contains('V')])
+    
+    if len(hrma)>0:
+        dataas[str(keys+'V')] =np.zeros(len(back))
+        dataas.loc[0:len(hrma)-1,str(keys+'V')]=hrma
+        for i in hrma:
+                del df[i]
+    
+    prueba=df.columns.str.contains('MAG')
+    prueba1=df.loc[:,prueba]
+    hrmb=list(prueba1.columns)            
+    if len(hrmb)>0:
+        dataas[str(keys+'I')] =np.zeros(len(back))
+        dataas.loc[0:len(hrmb)-1,str(keys+'I')]=hrmb
+        for i in hrmb:
+                del df[i]
+
+                
+if np.shape(df)[1] >0:
+    keys='ANG'
+    
+    
+    prueba=df.columns.str.contains('ANG')
+    prueba1=df.loc[:,prueba]
+    
+    hrma=list(prueba1.columns[prueba1.columns.str.contains('V')])
+    
+    if len(hrma)>0:
+        dataas[str(keys+'V')] =np.zeros(len(back))
+        dataas.loc[0:len(hrma)-1,str(keys+'V')]=hrma
+        for i in hrma:
+                del df[i]
+    
+    prueba=df.columns.str.contains('ANG')
+    prueba1=df.loc[:,prueba]
+    hrmb=list(prueba1.columns)            
+    if len(hrmb)>0:
+        dataas[str(keys+'I')] =np.zeros(len(back))
+        dataas.loc[0:len(hrmb)-1,str(keys+'I')]=hrmb
+        for i in hrmb:
+                del df[i]
+
+if np.shape(df)[1] >0:
+    keys='IMB'
+    
+    
+    prueba=df.columns.str.contains('IMB')
+    prueba1=df.loc[:,prueba]
+    
+    hrma=list(prueba1.columns[prueba1.columns.str.contains('V')])
+    
+    if len(hrma)>0:
+        dataas[str(keys+'V')] =np.zeros(len(back))
+        dataas.loc[0:len(hrma)-1,str(keys+'V')]=hrma
+        for i in hrma:
+                del df[i]
+    
+    prueba=df.columns.str.contains('IMB')
+    prueba1=df.loc[:,prueba]
+    hrmb=list(prueba1.columns)            
+    if len(hrmb)>0:
+        dataas[str(keys+'I')] =np.zeros(len(back))
+        dataas.loc[0:len(hrmb)-1,str(keys+'I')]=hrmb
+        for i in hrmb:
+                del df[i]
+    
             
 if np.shape(df)[1] >0:
     keys='HRM'
@@ -356,6 +432,41 @@ if np.shape(df)[1] >0:
         dataas.loc[0:len(hrmc)-1,str(keys+'C')]=hrmc
         for i in hrmc:
                 del df[i]
+
+
+if np.shape(df)[1] >0:
+    
+    
+    minimos=df.columns.str.contains('MN')
+    maximos=df.columns.str.contains('MX')
+    prueba1=df.loc[:,minimos]
+    prueba2=df.loc[:,maximos]
+    prueba1=pd.concat([prueba1,prueba2],axis=1)
+    #prueba3
+    hrma=list(prueba1.columns[prueba1.columns.str.contains('I')])
+    hrmb=list(prueba1.columns[prueba1.columns.str.contains('V')])
+    hrmc=list(prueba1.columns[prueba1.columns.str.contains('3')])
+    
+    if len(hrma)>0:
+        dataas['HI'] =np.zeros(len(back))
+        dataas.loc[0:len(hrma)-1,'HI']=hrma
+        for i in hrma:
+                del df[i]
+                
+    if len(hrmb)>0:
+        dataas['HV'] =np.zeros(len(back))
+        dataas.loc[0:len(hrmb)-1,'HV']=hrmb
+        for i in hrmb:
+                del df[i]
+                
+    if len(hrmc)>0:
+        dataas['HW'] =np.zeros(len(back))
+        dataas.loc[0:len(hrmc)-1,'HW']=hrmc
+        for i in hrmc:
+                del df[i]
+
+
+
                 
 if np.shape(df)[1] >0:
     keys=['I','V']
@@ -373,5 +484,4 @@ if np.shape(df)[1] >0:
         dataas['P'] =np.zeros(len(back))
         power=list(df.columns)
         dataas.loc[0:len(power)-1,'P']=power
-        
-        
+
