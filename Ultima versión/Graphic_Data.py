@@ -17,8 +17,8 @@ import shutil
 from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
 options.add_argument('--headless')
-web_driver=Chrome(executable_path='chromedriver.exe',options=options)
-
+web_driver=Chrome(executable_path=r'C:\Users\nboni\OneDrive\Documents\GitHub\EPSOL-Trabajo1\Ultima versión\chromedriver.exe',options=options)
+from bokeh.io.export import get_screenshot_as_png
 
     
 #Clase Para obtener toda la data
@@ -353,7 +353,8 @@ class Graphic_Data:
         final=new_d.dropna()              #
            
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-        bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
+        #bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
+        bp = figure(width=4800, height=2000, x_axis_type="datetime", toolbar_location='right',
                     sizing_mode="scale_width", title=key, tools=tools)
         bp.toolbar.autohide = True
 
@@ -380,9 +381,12 @@ class Graphic_Data:
         #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
         #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         #se demora mucho cuando va a exportar
-        #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
-        #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
+        filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
+        export_png(bp, filename=filen,webdriver=web_driver)
         #shutil.copy(plot_name,self.path)
+        #filen=str('./Imagenes/'+key+'.png')
+        #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
+        
         return plot_name
 
     def plotVariable(self, dataframe, variables):
@@ -431,6 +435,7 @@ class Graphic_Data:
         #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
         #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         #shutil.copy(plot_name,self.path)
+        
         return plot_name   
 
         

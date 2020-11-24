@@ -29,6 +29,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.show()
         self.initial_dir = "../"
         self.makeDir()
+        self.rept=[]
         self.createdFiles = [] # Esta lista almacena todos los html generados para eliminarlos al cerrar la app 
         
         #Estas variables sirven para saber si hay ventanas abiertas y cerrarlas al cerrar la app
@@ -124,7 +125,11 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                 for fichero in files:
                     (nombreFichero, extension) = os.path.splitext(fichero)
                     if(extension == ".png"):
-                        lstFiles.append(nombreFichero+extension)
+                        if not nombreFichero in self.rept:
+                            lstFiles.append(nombreFichero+extension)                
+                            self.rept.append(nombreFichero)
+                        else:
+                            pass
             if len(lstFiles) == 0:
                 aviso="No se ha generado ninguna gráfica"
                 self.warning(anuncio=aviso)

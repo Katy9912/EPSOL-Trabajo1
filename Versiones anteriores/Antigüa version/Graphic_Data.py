@@ -234,17 +234,17 @@ class Graphic_Data:
         from bokeh.palettes import Spectral4, Category20_20,Category20b_4
         from bokeh.io import export_png        
 
-        data = dataframe.copy()      
-        final = data[self.mediciones_dict[key]].dropna()  
-        
         #data = dataframe.copy()      
-        #dataas=new_gra(data)
-        #new_c=dataas[key]                   #   
-        #new_c=list(new_c[~(new_c==0)])       #   
+        #final = data[self.mediciones_dict[key]].dropna()  
+        
+        data = dataframe.copy()      
+        dataas=new_gra(data)
+        new_c=dataas[key]                   #   
+        new_c=list(new_c[~(new_c==0)])       #   
                                              #
-        #new_d=pd.DataFrame()                 #
-        #new_d=data[new_c]                    #   
-        #final=new_d.dropna()     
+        new_d=pd.DataFrame()                 #
+        new_d=data[new_c]                    #   
+        final=new_d.dropna()     
         
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
         bp = figure(width=300, height=300, x_axis_type="datetime", toolbar_location='right',
@@ -295,9 +295,10 @@ if __name__ == "__main__":
     filedialog.mainloop()
         
     data = Data.merge(filenames)
-    key='HRMA'
-    name,fin= Data.plot(data,key)
+    #key='HRMA'
+    #name,fin= Data.plot(data,key)
     #keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN','HRMA','HRMB','HRMC','I','V','P']
-    #for key in keys:
-    #    name,fin= Data.plot(data,key)
+    keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN','HRMA','HRMB','HRMC','I','V','P']
+    for key in keys:
+        name,fin= Data.plot(data,key)
          

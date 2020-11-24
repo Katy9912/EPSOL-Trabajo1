@@ -12,6 +12,11 @@ from tkinter import filedialog
 from functools import reduce
 import csv
 import os, time
+from selenium.webdriver import Chrome, ChromeOptions
+options=ChromeOptions()
+options.add_argument('--headless')
+web_driver=Chrome(executable_path='chromedriver.exe',options=options)
+
 
 categorias=dict(PF=['PFT3','LDPFT3','PFTA','LDPFTA','PFTB','LDPFTB','PFTC','LDPFTC'], 
                 HRMA=['HRM3_IA','HRM5_IA','HRM7_IA','HRM9_IA','HRM11_IA','HRM13_IA','HRM15_IA','HRM17_IA',
@@ -271,8 +276,9 @@ def plot(dataframe, key):
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
         #se demora mucho cuando va a exportar
-        #filen=str('./Imagenes/'+key+'.png')
+        filen=str('./Imagenes/'+key+'.png')
         #export_png(bp, filename=filen, height=6, width=8)
+        export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         return plot_name
 
 #for key in Data.mediciones_dict:
@@ -290,8 +296,8 @@ filenames = filedialog.askopenfilenames(title="Selecciona los Archivos",
 filedialog.mainloop()
 data = merge(filenames,True)    
 #data = Data.merge(filenames,False)
-#key='HRMA'
-#name= plot(data,key)
+key='HRMA'
+name= plot(data,key)
 
 
 
@@ -486,34 +492,72 @@ if np.shape(df)[1] >0:
         dataas.loc[0:len(power)-1,'P']=power
 
 
-import docx
-from docx import Document
-path = "./Imagenes"       
-lstFiles = []        
-lstDir = os.walk(path)        
- 
-for root, dirs, files in lstDir:
-    for fichero in files:
-        (nombreFichero, extension) = os.path.splitext(fichero)
-        if(extension == ".png"):
-            lstFiles.append(nombreFichero+extension)
-print(lstFiles)       
-for f in lstFiles:            
-    try:
-        doc = docx.Document('test.docx')
-        doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(100), height=docx.shared.Cm(50))
-        
-        doc.add_picture(str(path+'\\'+f))
-        doc.save('test.docx')
-    except Exception as e: 
 
-        print(e,"Generando archivo .docx")            
-        document = Document()
-        document.save('test.docx')
-        doc = docx.Document('test.docx')
-        #doc.add_picture(str(path+'\\'+f))
-        doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(100), height=docx.shared.Cm(50))
-        
-        doc.save('test.docx')    
-print("Archivo finalizado")        
-        
+from selenium.webdriver import Chrome, ChromeOptions
+options=ChromeOptions()
+options.add_argument('--headless')
+web_driver=Chrome(executable_path=r'C:\Users\nboni\OneDrive\Documents\GitHub\EPSOL-Trabajo1\Ultima versión\chromedriver.exe',options=options)
+from bokeh.io.export import get_screenshot_as_png
+
+
+
+from bokeh.plotting import figure, output_file, save
+from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
+from bokeh.io import output_notebook, show
+from bokeh.palettes import Spectral4, Category20_20
+from bokeh.io import export_png        
+
+#data = dataframe.copy()      
+dataas=new_gra(data)
+new_c=dataas[key]                   #   
+new_c=list(new_c[~(new_c==0)])       #   
+                                     #
+new_d=pd.DataFrame()                 #
+new_d=data[new_c]                    #   
+final=new_d.dropna()     
+
+#final = new_file.dropna()    
+#final = data.loc[categorias[key]].dropna()
+#final = data[categorias[key]].dropna()
+
+tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
+bp = figure(width=4800, height=2000, x_axis_type="datetime", toolbar_location='right',
+#bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
+            sizing_mode="scale_width", title=key, tools=tools)
+bp.toolbar.autohide = True
+
+
+for column, color in zip(list(final), Category20_20):
+    
+    cds = ColumnDataSource(final)
+    a = bp.circle(x='Datetime', y=column, source=cds, fill_alpha=0.0, line_alpha=0.0, size=5)
+    bp.step(x='Datetime', y=column, source=cds, mode="after", line_color=color, legend_label=column)
+    hover = HoverTool(
+        tooltips=[
+            ("Datetime", "@Datetime{%Y-%m-%d %H:%M:%S}"), (column, f"@{column}")
+                ],
+        formatters={"@Datetime": "datetime"}, mode='vline', renderers=[a], toggleable=False)
+
+    bp.add_tools(hover)
+
+bp.legend.location = "top_left"
+bp.legend.click_policy = "hide"
+plot_name = str(f'{key} -plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + ".html")   
+
+output_file(plot_name, title=key, mode="cdn")
+save(bp)
+#image = get_screenshot_as_png(bp,driver=web_driver)
+#image.save('prueba.png')
+
+
+import bokeh.plotting as bp
+#from bokeh.io import export_png
+
+x = np.linspace(0, 2)
+y = np.sqrt(x)
+
+fig = bp.figure(width=700, height=300)
+fig.circle(x, y)
+
+export_png(bp, filename="test11.png")
+#export_png(bp, filename="test11.png", width=9000, height=15000,webdriver=web_driver)
