@@ -231,19 +231,20 @@ class Graphic_Data:
         from bokeh.plotting import figure, output_file, save
         from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
         from bokeh.io import output_notebook, show
-        from bokeh.palettes import Spectral4, Category20_20
+        from bokeh.palettes import Spectral4, Category20_20,Category20b_4
         from bokeh.io import export_png        
 
-        #data = dataframe.copy()      
-        #final = data[self.mediciones_dict[key]].dropna()  
         data = dataframe.copy()      
-        dataas=new_gra(data)
-        new_c=dataas[key]                   #   
-        new_c=list(new_c[~(new_c==0)])       #   
+        final = data[self.mediciones_dict[key]].dropna()  
+        
+        #data = dataframe.copy()      
+        #dataas=new_gra(data)
+        #new_c=dataas[key]                   #   
+        #new_c=list(new_c[~(new_c==0)])       #   
                                              #
-        new_d=pd.DataFrame()                 #
-        new_d=data[new_c]                    #   
-        final=new_d.dropna()     
+        #new_d=pd.DataFrame()                 #
+        #new_d=data[new_c]                    #   
+        #final=new_d.dropna()     
         
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
         bp = figure(width=300, height=300, x_axis_type="datetime", toolbar_location='right',
@@ -278,7 +279,7 @@ class Graphic_Data:
         #image1 = cv2.imread(plot_name)
         #imagen1=cv2.resize(image1, dsize=(1200, 1200))    
         #cv2.imwrite(filen,imagen1) 
-        return plot_name
+        return plot_name, final
 
 
 if __name__ == "__main__":
@@ -294,9 +295,9 @@ if __name__ == "__main__":
     filedialog.mainloop()
         
     data = Data.merge(filenames)
-    #key='HRMA'
-    #name,new_columns= Data.plot(data,key)
-    keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN','HRMA','HRMB','HRMC','I','V','P']
-    for key in keys:
-        name= Data.plot(data,key)
+    key='HRMA'
+    name,fin= Data.plot(data,key)
+    #keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN','HRMA','HRMB','HRMC','I','V','P']
+    #for key in keys:
+    #    name,fin= Data.plot(data,key)
          

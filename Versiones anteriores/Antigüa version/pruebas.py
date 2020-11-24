@@ -485,3 +485,35 @@ if np.shape(df)[1] >0:
         power=list(df.columns)
         dataas.loc[0:len(power)-1,'P']=power
 
+
+import docx
+from docx import Document
+path = "./Imagenes"       
+lstFiles = []        
+lstDir = os.walk(path)        
+ 
+for root, dirs, files in lstDir:
+    for fichero in files:
+        (nombreFichero, extension) = os.path.splitext(fichero)
+        if(extension == ".png"):
+            lstFiles.append(nombreFichero+extension)
+print(lstFiles)       
+for f in lstFiles:            
+    try:
+        doc = docx.Document('test.docx')
+        doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(100), height=docx.shared.Cm(50))
+        
+        doc.add_picture(str(path+'\\'+f))
+        doc.save('test.docx')
+    except Exception as e: 
+
+        print(e,"Generando archivo .docx")            
+        document = Document()
+        document.save('test.docx')
+        doc = docx.Document('test.docx')
+        #doc.add_picture(str(path+'\\'+f))
+        doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(100), height=docx.shared.Cm(50))
+        
+        doc.save('test.docx')    
+print("Archivo finalizado")        
+        

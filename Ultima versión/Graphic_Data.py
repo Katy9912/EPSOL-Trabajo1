@@ -328,13 +328,26 @@ class Graphic_Data:
         from bokeh.plotting import figure, output_file, save
         from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
         from bokeh.io import output_notebook, show
-        from bokeh.palettes import Spectral4, Category20_20
+        from bokeh.palettes import Spectral4, Category20_20,Category20b_20
         from bokeh.io import export_png        
 
         data = dataframe.copy()
         dataas=self.new_gra(data)
         new_c=dataas[key]        #   
-        new_c=list(new_c[~(new_c==0)])        #                       
+        new_c=list(new_c[~(new_c==0)])   
+        colors=[]
+
+        if len(new_c)>20:
+            
+            
+            for c in Category20_20:
+                colors.append(c)
+            for c in Category20b_20:
+                colors.append(c)
+        else:
+           colors= Category20_20
+           colors=colors
+
         new_d=pd.DataFrame()                 #
         new_d=data[new_c]                      #   
         final=new_d.dropna()              #
@@ -345,7 +358,7 @@ class Graphic_Data:
         bp.toolbar.autohide = True
 
 
-        for column, color in zip(list(final), Category20_20):
+        for column, color in zip(list(final), colors):
             
             cds = ColumnDataSource(final)
             a = bp.circle(x='Datetime', y=column, source=cds, fill_alpha=0.0, line_alpha=0.0, size=5)
@@ -418,7 +431,7 @@ class Graphic_Data:
         #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
         #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
         #shutil.copy(plot_name,self.path)
-        return plot_name         
+        return plot_name   
 
         
 
