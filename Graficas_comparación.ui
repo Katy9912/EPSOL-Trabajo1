@@ -60,16 +60,6 @@ QPushButton:pressed {
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="widget" native="true">
-    <property name="geometry">
-     <rect>
-      <x>260</x>
-      <y>80</y>
-      <width>1040</width>
-      <height>491</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="logo_label">
     <property name="geometry">
      <rect>
@@ -201,6 +191,16 @@ border-color: rgb(32, 112, 137);</string>
       </rect>
      </property>
     </widget>
+   </widget>
+   <widget class="QWidget" name="widget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>260</x>
+      <y>80</y>
+      <width>1040</width>
+      <height>500</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

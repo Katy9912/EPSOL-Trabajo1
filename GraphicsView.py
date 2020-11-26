@@ -36,6 +36,7 @@ class GraphicsView (QtWidgets.QMainWindow):
         self.save_dir = parent.parent.getPath() #Esta variable hace referencia al directorio raiz donde se guardaran las graficas
         self.info = None #Esta variable almacena la informacion del dataframe que se usa para graficar
         self.key = "" #Esta variable guarda el nombre de la "variable" que se quiere graficar
+        self.label = "" #Esta variable guarda la etiqueta del boton para que funja como titulo
         
 
         #Listeners de los botones "Regresar" e "Inicio"
@@ -54,12 +55,13 @@ class GraphicsView (QtWidgets.QMainWindow):
     def setData(self,datos):
         self.info = datos
     #Metodo que obtiene el nombre de la categoria que se graficara (Nombre del boton)
-    def setName(self,name):
+    def setName(self,name, label_title):
         self.key = name
+        self.label = label_title
 
     #Metodo que genera la grafica
     def plotitem(self):
-        plot_name = self.data.plot(dataframe=self.info, key=self.key)
+        plot_name = self.data.plot(dataframe=self.info, key=self.key, label_title=self.label)
         self.parent.parent.setFiles(files=plot_name) #Este método almacena una lista de los archivos html generados
         plot_file = os.path.join("file:///" + self.init_dir, plot_name)
         self.web.load(QUrl(plot_file))

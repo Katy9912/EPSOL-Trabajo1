@@ -2,7 +2,8 @@ import pandas as pd
 import numpy as np
 import os
 from PyQt5.QtWidgets import *
-from PyQt5 import QtWidgets
+from PyQt5 import QtWidgets 
+from PyQt5 import QtWebEngineWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtCore import *
 
@@ -33,11 +34,14 @@ class GraphicsComparison(QtWidgets.QMainWindow):
         self.setWindowFlags(self.windowFlags() | QtCore.Qt.CustomizeWindowHint)
         self.setWindowFlags(self.windowFlags() & ~QtCore.Qt.WindowCloseButtonHint)
         
+        #self.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        
 
         #Se inicializa la vista Web para las graficas y la logica del programa
         self.web = QWebEngineView(self.ui.widget)
         self.web.resize(1040,500)
         self.web.setZoomFactor(0.8)
+    
         self.data = Graphic_Data()
         self.data.setPath(path=self.save_dir)
 

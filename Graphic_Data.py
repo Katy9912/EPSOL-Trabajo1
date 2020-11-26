@@ -17,55 +17,67 @@ import shutil
 from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
 options.add_argument('--headless')
-web_driver=Chrome(executable_path='C:\\EPSOL_APP\\chromedriver.exe',options=options)
+web_driver=Chrome(executable_path='C:\\chromedriver.exe',options=options)
 
 
     
 #Clase Para obtener toda la data
 class Graphic_Data:
     def __init__(self):
-        #Declaración de un diccionario para agrupar graficas por tema o categoria
-        self.mediciones_dict = dict(
-           
-            PF=['PFT3','LDPFT3','PFTA','LDPFTA','PFTB','LDPFTB','PFTC','LDPFTC'], 
-                HRMA=['HRM3_IA','HRM5_IA','HRM7_IA','HRM9_IA','HRM11_IA','HRM13_IA','HRM15_IA','HRM17_IA',
-                          'HRM19_IA','HRM21_IA','HRM23_IA','HRM25_IA','HRM27_IA','HRM29_IA','HRM31_IA','HRM33_IA',
-                          'HRM35_IA','HRM37_IA','HRM39_IA','HRM41_IA','HRM43_IA','HRM45_IA','HRM47_IA','HRM49_IA'],
-                HRMB=['HRM25_IB','HRM3_IB','HRM27_IB','HRM5_IB','HRM7_IB','HRM9_IB','HRM11_IB','HRM13_IB','HRM15_IB',
-                      'HRM17_IB','HRM19_IB','HRM21_IB','HRM23_IB','HRM29_IB','HRM31_IB','HRM33_IB','HRM35_IB',
-                      'HRM37_IB','HRM39_IB','HRM41_IB','HRM43_IB','HRM45_IB','HRM47_IB','HRM49_IB'],
-                HRMC=['HRM3_IC','HRM5_IC','HRM7_IC','HRM23_IC','HRM9_IC','HRM11_IC','HRM13_IC','HRM15_IC','HRM17_IC',
-                      'HRM19_IC','HRM21_IC','HRM25_IC','HRM27_IC','HRM29_IC','HRM31_IC','HRM33_IC','HRM35_IC','HRM37_IC',
-                      'HRM39_IC','HRM41_IC','HRM43_IC','HRM45_IC','HRM47_IC','HRM49_IC'],
-                Voltaje=['VA','VB','VC','VAB','VBC','VCA','V_AVE'],
-                Corriente=['IA','IB','IC','I_AVE'],
-                Frecuencia=['FREQ'],
-                Potencia=['W3','U3','Q3','QA','QB','QC','UA','UB','UC','WA','WB','WC'], 
-                DistorsionI=['THDIA','THDIB','THDIC','THDIN'],
-                DistorsionV=['THDVA','THDVB','THDVC'],
-                FactorK=['KFA','KFB','KFC'],
-                FactorDP=['DPA','DPB','DPC','DP3'],
-                DesbalanceI=['I0_IMB'],
-                DesbalanceV=['V0_IMB','V_IMB','I_IMB'],
-                FlickerPST=['PST_10MIN_VA','PST_10MIN_VB','PST_10MIN_VC'],
-                FlickerPLT=['PLT_VA','PLT_VB','PLT_VC'],
-                MagI=['3I0_MAG','I1_MAG','3I2_MAG'],
-                AngI=['I1_ANG','3I0_ANG','3I2_ANG'],
-                MagV=['3V0_MAG','V1_MAG','V2_MAG'],
-                AngV=['3V0_ANG','V1_ANG','V2_ANG'],
-                HistoI=['IAMX','IAMN','IBMX','IBMN','ICMX','ICMN','INMX','INMN'],
-                HistoV=['VAMX','VAMN','VBMX','VBMN','VCMX','VCMN'],
-                HistoP=['W3MX','W3MN','U3MX','U3MN','Q3MX','Q3MN'],
-                EnerAc=['WH3_DEL','WH3_REC','WHA_NET','WHB_NET','WH3_NET','WHC_NET'],
-                EnerAp=['UH3_DEL','UH3_REC'],EnerR=['QH3_DEL','QH3_REC','QHA_DEL','QHA_REC','QHB_DEL','QHB_REC','QHC_DEL','QHC_REC','QH3_NET'],
-                EnerRA=['VARH3_DEL_LG','VARH3_DEL_LD','VARH3_REC_LG','VARH3_REC_LD'])
+        #Diccionaria para las etiquetas de las graficas
+        self.name= dict(
+            PF="%",
+           #HRMA="%"+"F",
+            #HRMB="%"+"F",
+            #HRMC="%"+"F",
+            V="V",
+            I="A",
+            FR="Hz",
+            P="W",
+            THDI="%",
+            THDB="%",
+            KF="%",
+            DP="%",
+            IMBV="%",
+            IMBI="%",
+            PST="% Voltaje",
+            PLT="% Voltaje",
+            #MAGI=
+            ANGI="°",
+            #MAGV=
+            ANGV="°",
+            HI="A",
+            HV="V",
+            HW="W",
+            WH="WH",
+            UH="VAH",
+            QH="VARH",
+            VARH="VARH"
+        )
+
+        self.months_dic= {
+
+        
+            "Enero" : '01',
+            "Febrero" : '02',
+            "Marzo" : '03',
+            "Abril" : '04',
+            "Mayo" : '05',
+            "Junio" : '06',
+            "Julio" : '07',
+            "Agosto" : '08',
+            "Septiembre" : '09',
+            "Octubre" : '10',
+            "Noviembre" : '11',
+            "Diciembre" : '12'
+        }
             
     def setPath(self, path):
         self.path = path
 
     def new_gra(self,data):
         
-        keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR','MAG','ANG','IMB','MX','MN']
+        keys=['PF','THDI','THDV','KF','DP','PST','PLT','WH','UH','QH','VARH','FR']
         dataas=pd.DataFrame()
         back=list(data.columns)
         df=data.copy()
@@ -83,6 +95,80 @@ class Graphic_Data:
                         del df[i]
             else:
                 break            
+        
+        if np.shape(df)[1] >0:
+            keys='MAG'
+            
+            
+            prueba=df.columns.str.contains('MAG')
+            prueba1=df.loc[:,prueba]
+            
+            hrma=list(prueba1.columns[prueba1.columns.str.contains('V')])
+            
+            if len(hrma)>0:
+                dataas[str(keys+'V')] =np.zeros(len(back))
+                dataas.loc[0:len(hrma)-1,str(keys+'V')]=hrma
+                for i in hrma:
+                        del df[i]
+            
+            prueba=df.columns.str.contains('MAG')
+            prueba1=df.loc[:,prueba]
+            hrmb=list(prueba1.columns)            
+            if len(hrmb)>0:
+                dataas[str(keys+'I')] =np.zeros(len(back))
+                dataas.loc[0:len(hrmb)-1,str(keys+'I')]=hrmb
+                for i in hrmb:
+                        del df[i]
+        
+                        
+        if np.shape(df)[1] >0:
+            keys='ANG'
+            
+            
+            prueba=df.columns.str.contains('ANG')
+            prueba1=df.loc[:,prueba]
+            
+            hrma=list(prueba1.columns[prueba1.columns.str.contains('V')])
+            
+            if len(hrma)>0:
+                dataas[str(keys+'V')] =np.zeros(len(back))
+                dataas.loc[0:len(hrma)-1,str(keys+'V')]=hrma
+                for i in hrma:
+                        del df[i]
+            
+            prueba=df.columns.str.contains('ANG')
+            prueba1=df.loc[:,prueba]
+            hrmb=list(prueba1.columns)            
+            if len(hrmb)>0:
+                dataas[str(keys+'I')] =np.zeros(len(back))
+                dataas.loc[0:len(hrmb)-1,str(keys+'I')]=hrmb
+                for i in hrmb:
+                        del df[i]
+        
+        if np.shape(df)[1] >0:
+            keys='IMB'
+            
+            
+            prueba=df.columns.str.contains('IMB')
+            prueba1=df.loc[:,prueba]
+            
+            hrma=list(prueba1.columns[prueba1.columns.str.contains('V')])
+            
+            if len(hrma)>0:
+                dataas[str(keys+'V')] =np.zeros(len(back))
+                dataas.loc[0:len(hrma)-1,str(keys+'V')]=hrma
+                for i in hrma:
+                        del df[i]
+            
+            prueba=df.columns.str.contains('IMB')
+            prueba1=df.loc[:,prueba]
+            hrmb=list(prueba1.columns)            
+            if len(hrmb)>0:
+                dataas[str(keys+'I')] =np.zeros(len(back))
+                dataas.loc[0:len(hrmb)-1,str(keys+'I')]=hrmb
+                for i in hrmb:
+                        del df[i]
+            
                     
         if np.shape(df)[1] >0:
             keys='HRM'
@@ -112,6 +198,41 @@ class Graphic_Data:
                 dataas.loc[0:len(hrmc)-1,str(keys+'C')]=hrmc
                 for i in hrmc:
                         del df[i]
+        
+        
+        if np.shape(df)[1] >0:
+            
+            
+            minimos=df.columns.str.contains('MN')
+            maximos=df.columns.str.contains('MX')
+            prueba1=df.loc[:,minimos]
+            prueba2=df.loc[:,maximos]
+            prueba1=pd.concat([prueba1,prueba2],axis=1)
+            #prueba3
+            hrma=list(prueba1.columns[prueba1.columns.str.contains('I')])
+            hrmb=list(prueba1.columns[prueba1.columns.str.contains('V')])
+            hrmc=list(prueba1.columns[prueba1.columns.str.contains('3')])
+            
+            if len(hrma)>0:
+                dataas['HI'] =np.zeros(len(back))
+                dataas.loc[0:len(hrma)-1,'HI']=hrma
+                for i in hrma:
+                        del df[i]
+                        
+            if len(hrmb)>0:
+                dataas['HV'] =np.zeros(len(back))
+                dataas.loc[0:len(hrmb)-1,'HV']=hrmb
+                for i in hrmb:
+                        del df[i]
+                        
+            if len(hrmc)>0:
+                dataas['HW'] =np.zeros(len(back))
+                dataas.loc[0:len(hrmc)-1,'HW']=hrmc
+                for i in hrmc:
+                        del df[i]
+        
+        
+        
                         
         if np.shape(df)[1] >0:
             keys=['I','V']
@@ -129,7 +250,8 @@ class Graphic_Data:
                 dataas['P'] =np.zeros(len(back))
                 power=list(df.columns)
                 dataas.loc[0:len(power)-1,'P']=power
-                
+        
+        
                   
                 
         return dataas
@@ -210,32 +332,77 @@ class Graphic_Data:
 
         return graph
 
-       
+    #Metodo que regresa los meses disponibles para filtrar
+    def getMonths(self,dataframe):
+        data = dataframe.copy()
+        index = data.index.tolist()
+        months = list(set(pd.DatetimeIndex(index).month_name(locale='Spanish')))
+        months.insert(0,'Todos')
+        return months
 
+    # Función para generar nombres de ejes graficas
+    def etiqueta(self,llave):
+        guardar=self.name.get(llave)
+        return guardar
+
+    #Funcion que realiza el filtrado de datos7
+    def makeFilter(self,date,dataframe):
+        index = []
+        data = dataframe.copy()
+        selected_month = self.months_dic.get(date)
+        dates = data.index.tolist()
+        for element in dates:
+            element_month = element.strftime('%m')
+            if element_month == selected_month:
+                index.append(element)
+        result = data.loc[index]
+        return result
+
+                     
 
     #Funcion generadora de graficas
-    def plot(self, dataframe, key):
+    def plot(self, dataframe, key, label_title):
         from bokeh.plotting import figure, output_file, save
         from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
         from bokeh.io import output_notebook, show
-        from bokeh.palettes import Spectral4, Category20_20
+        from bokeh.palettes import Spectral4, Category20_20, Category20b_20
         from bokeh.io import export_png        
 
         data = dataframe.copy()
         dataas=self.new_gra(data)
         new_c=dataas[key]        #   
         new_c=list(new_c[~(new_c==0)])        #                       
+        
+        #Codigo que permite corregir el problema de colores para las categorias >20 variables
+        colors=[]
+        if len(new_c)>20:    
+            for c in Category20_20:
+                colors.append(c)
+            for c in Category20b_20:
+                colors.append(c)
+        else:
+           colors= Category20_20
+           colors=colors
+        
         new_d=pd.DataFrame()                 #
-        new_d=data[new_c]                      #   
-        final=new_d.dropna()              #
-           
+        new_d=data[new_c]     
+        if new_d.isnull().values.any():                      #   
+            final=new_d.fillna(value=0)
+        else:
+            final=new_d
+        
+                        #   
+        #final=new_d.dropna()              #
+        label= self.etiqueta(llave=key)
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-        bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
-                    sizing_mode="scale_width", title=key, tools=tools)
+        bp = figure(width=4800, height=2000, x_axis_type="datetime", x_axis_label="Tiempo (t)", y_axis_label= str(label), toolbar_location='right',
+                    sizing_mode="stretch_both", title=label_title, tools=tools)
+        bp.title.text_font_style = 'bold'
+        bp.title.align = 'center'
         bp.toolbar.autohide = True
 
 
-        for column, color in zip(list(final), Category20_20):
+        for column, color in zip(list(final), colors):
             
             cds = ColumnDataSource(final)
             a = bp.circle(x='Datetime', y=column, source=cds, fill_alpha=0.0, line_alpha=0.0, size=5)
@@ -254,36 +421,48 @@ class Graphic_Data:
 
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
-        filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
-        export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
-        #se demora mucho cuando va a exportar
-        #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
-        #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
-        #shutil.copy(plot_name,self.path)
+        filen=str(self.path+key+'.png')
+        export_png(bp, filename=filen,webdriver=web_driver)
+        
         return plot_name
 
     def plotVariable(self, dataframe, variables):
         from bokeh.plotting import figure, output_file, save
         from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
         from bokeh.io import output_notebook, show
-        from bokeh.palettes import Spectral4, Category20_20
+        from bokeh.palettes import Spectral4, Category20_20, Category20b_20
         from bokeh.io import export_png        
         
         var = variables
         data = dataframe.copy()
         new_d=pd.DataFrame()                 #
         new_d=data[var]
+        
+        #Codigo que permite corregir el problema de colores para las categorias >20 variables
+        colors=[]
+        if len(var)>20:    
+            for c in Category20_20:
+                colors.append(c)
+            for c in Category20b_20:
+                colors.append(c)
+        else:
+           colors= Category20_20
+           colors=colors
+
         if new_d.isnull().values.any():                      #   
             final=new_d.fillna(value=0)
         else:
             final=new_d
+        
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-        bp = figure(width=500, height=280, x_axis_type="datetime", toolbar_location='right',
-                    sizing_mode="scale_width", title="Customized", tools=tools)
+        bp = figure(width=4800, height=2000,x_axis_type="datetime", x_axis_label="Tiempo (t)", toolbar_location='right',
+                    sizing_mode="stretch_both", title="Personalizado", tools=tools)
+        bp.title.text_font_style = 'bold'
+        bp.title.align = 'center'
         bp.toolbar.autohide = True
 
 
-        for column, color in zip(list(final), Category20_20):
+        for column, color in zip(list(final), colors):
             
             cds = ColumnDataSource(final)
             a = bp.circle(x='Datetime', y=column, source=cds, fill_alpha=0.0, line_alpha=0.0, size=5)
@@ -299,15 +478,12 @@ class Graphic_Data:
         bp.legend.location = "top_left"
         bp.legend.click_policy = "hide"
         plot_name = str('CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + ".html")   
-
         output_file(plot_name, title="customized", mode="cdn")
         save(bp)
-        filen=str(self.path+'CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S")+'.png') #ACUERDATE DE CAMBIARLO
-        export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
-        #se demora mucho cuando va a exportar
-        #filen=str(self.path+key+'.png') #ACUERDATE DE CAMBIARLO
-        #export_png(bp, filename=filen, height=6, width=8,webdriver=web_driver)
-        #shutil.copy(plot_name,self.path)
+        
+        filen=str(self.path+'CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S")+'.png') 
+        export_png(bp, filename=filen,webdriver=web_driver)
+    
         return plot_name         
 
         
@@ -323,7 +499,7 @@ if __name__ == "__main__":
                                             initialdir=initial_dir,
                                             filetypes=(("Archivo CSV", "*.csv"), ("Todos los archivos", "*.*")))
     
-    filedialog.mainloop()
+    #filedialog.mainloop()
         
     data = Data.merge(filenames)
     #key='HRMA'

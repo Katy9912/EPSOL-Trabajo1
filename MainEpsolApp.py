@@ -29,6 +29,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.show()
         self.initial_dir = "../"
         self.makeDir()
+        self.rept=[]
         self.createdFiles = [] # Esta lista almacena todos los html generados para eliminarlos al cerrar la app 
         
         #Estas variables sirven para saber si hay ventanas abiertas y cerrarlas al cerrar la app
@@ -58,6 +59,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         if self.files[0]:
             graph = Graphic_Data()
             self.data = graph.merge(self.files[0])
+            
 
     #Metodo que crea la carpeta nueva para almacenar
     # los archivos de la ejecucion
@@ -89,9 +91,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     def setFiles(self, files):
         doc = files
         self.createdFiles.append(doc)
-        print("Lista de archivos: ")
-        print(self.createdFiles)
-        print("")
+       
     
     #Metodo que descarga el csv de la informacion procesada
     def download(self):
@@ -102,15 +102,15 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         else:
             graph = Graphic_Data()
             self.data=graph.merge(self.files[0])
-            self.download = pd.DataFrame(self.data)
+            self.obtained = pd.DataFrame(self.data)
             self.nombre = datetime.now().strftime('Dataframe_usado__%H_%M_%d_%m_%Y.csv')
-            self.download.to_csv(str(self.nombre), header=True, index=False)
-            self.archivo = shutil.copy(self.nombre,self.path)
+            self.obtained.to_csv(str(self.nombre), header=True, index=False)
+            shutil.copy(self.nombre,self.path)
             os.remove(self.nombre)
             nota = "Descarga de reporte CSV completa" 
             self.information(anuncio=nota)
             
-    #Metodo para generar el reporte Word       
+    #Metodo para generar el reporte Word              
     def generateReport(self):
         if self.data is None:
             aviso= "No existen archivos cargados"
@@ -124,7 +124,11 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                 for fichero in files:
                     (nombreFichero, extension) = os.path.splitext(fichero)
                     if(extension == ".png"):
-                        lstFiles.append(nombreFichero+extension)
+                        if not nombreFichero in self.rept:
+                            lstFiles.append(nombreFichero+extension)                
+                            self.rept.append(nombreFichero)
+                        else:
+                            pass
             if len(lstFiles) == 0:
                 aviso="No se ha generado ninguna gráfica"
                 self.warning(anuncio=aviso)
@@ -132,23 +136,17 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                 for f in lstFiles:            
                     try:
                         doc = docx.Document(path+'\\'+'test.docx')
-                        #doc.add_picture(str(path+'\\'+f),width=docx.shared.Inches(10), height=docx.shared.Cm(5))
                         doc.add_picture(str(path+'\\'+f))
                         doc.save(path+'\\'+'test.docx')
                     except Exception as e: 
-            
                         print(e,"Generando archivo .docx")            
                         document = Document()
                         document.save(path+'\\'+'test.docx')
                         doc = docx.Document(path+'\\'+'test.docx')
                         doc.add_picture(str(path+'\\'+f))
-                        
                         doc.save(path+'\\'+'test.docx') 
                 nota = "Descarga de reporte WORD completa" 
                 self.information(anuncio=nota)
-                print("Archivo finalizado")        
-                
-            
 
     #Metodo que muestra el menu de las gráficas disponibles
     def availableGraphics(self):
@@ -160,9 +158,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
                 #Se crea una instancia de GraphicsMenu
                 self.menu = GraphicsMenu(parent=self)
                 self.menu.cargarData(data=self.data)
-                #Se establecen las opciones de gráficas que estan disponibles
-                #A partir de los archivos cargados
-                self.menu.comparar()
+               
                 #Se muestra interfaz
                 self.menu.show()
                
@@ -194,11 +190,11 @@ class MainEpsolApp (QtWidgets.QMainWindow):
     #Metodo que miestra información de desarrollo
     def info(self):
         QMessageBox.about(self, "Informacion del programa",
-                          "Programa Diseñado por:\nErick Rodriguez Orduña, \nCarlos " +
-                          "Ramirez Rendon, \nNatalia Bonifaz "+
-                          "Oviedo, \nMaría Juliana " +
-                          "Pérez Barón, \nKatia Patricia " +
-                          "Limon Fraga y \nJosé Emmanuel " + 
+                          "Programa Diseñado por:\nIng. Erick Rodriguez Orduña, \nIng. Carlos " +
+                          "Ramirez Rendon, \nIng. Natalia Bonifaz "+
+                          "Oviedo, \nIng. María Juliana " +
+                          "Pérez Barón, \nIng. Katia Patricia " +
+                          "Limon Fraga y \nIng. José Emmanuel " + 
                           "De Los Santos Castro \nPara: EPSOL SA de CV")
 
     #Metodo que muestra el mensaje de advertencia sobre datos inexistentes
@@ -213,7 +209,8 @@ class MainEpsolApp (QtWidgets.QMainWindow):
 #Main
 if __name__ == "__main__":
     import sys, time, os
-    from PyQt5.QtWidgets import QFileDialog, QMessageBox, QWidget
+    import PyQt5.QtWidgets
+    #from PyQt5.QtWidgets import QFileDialog, QMessageBox, QWidget
     from PyQt5.QtWebEngineWidgets import *
     from PyQt5.QtWidgets import *
     from PyQt5 import QtWidgets
@@ -222,3 +219,5 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     my_app = MainEpsolApp()
     sys.exit(app.exec_())
+
+    #python -m PyQt5.uic.pyuic -o [opciones] archivo.ui#
