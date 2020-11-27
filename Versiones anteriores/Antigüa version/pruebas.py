@@ -496,7 +496,7 @@ if np.shape(df)[1] >0:
 from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
 options.add_argument('--headless')
-web_driver=Chrome(executable_path=r'C:\Users\nboni\OneDrive\Documents\GitHub\EPSOL-Trabajo1\Ultima versión\chromedriver.exe',options=options)
+web_driver=Chrome(executable_path=r'C:\Users\nboni\OneDrive\Documents\GitHub\EPSOL-Trabajo1\Versiones anteriores\Antigüa version\chromedriver.exe',options=options)
 from bokeh.io.export import get_screenshot_as_png
 
 
@@ -521,7 +521,7 @@ final=new_d.dropna()
 #final = data[categorias[key]].dropna()
 
 tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-bp = figure(width=4800, height=2000, x_axis_type="datetime", toolbar_location='right',
+bp = figure(width=1350, height=630, x_axis_type="datetime", toolbar_location='right',
 #bp = figure(width=500, height=300, x_axis_type="datetime", toolbar_location='right',
             sizing_mode="scale_width", title=key, tools=tools)
 bp.toolbar.autohide = True
@@ -559,5 +559,5 @@ y = np.sqrt(x)
 fig = bp.figure(width=700, height=300)
 fig.circle(x, y)
 
-export_png(bp, filename="test11.png")
+export_png(bp, filename="test5.png",width=3350, height=2000)
 #export_png(bp, filename="test11.png", width=9000, height=15000,webdriver=web_driver)
