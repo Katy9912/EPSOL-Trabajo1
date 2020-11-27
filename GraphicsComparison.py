@@ -56,8 +56,9 @@ class GraphicsComparison(QtWidgets.QMainWindow):
 
     
     #Metodo para obtener el dataframe 
-    def setData(self,data):
+    def setData(self,data,month_used):
         self.info = data
+        self.month_selected = month_used
     
     #Metodo que permite generar la lista de opciones que se pueden graficar
     def createList(self):
@@ -85,7 +86,7 @@ class GraphicsComparison(QtWidgets.QMainWindow):
     #Metodo que genera la grafica con las variables seleccionadas
     def plot(self):
         variables = self.checkedOptions()
-        plot_name = self.data.plotVariable(dataframe=self.info, variables=variables)
+        plot_name = self.data.plotVariable(dataframe=self.info, variables=variables, month=self.month_selected)
         self.parent.parent.setFiles(files=plot_name) #Este método almacena una lista de los archivos html generados
         plot_file = os.path.join("file:///" + self.init_dir, plot_name)
         self.web.load(QUrl(plot_file))

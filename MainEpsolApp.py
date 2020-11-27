@@ -4,6 +4,7 @@ import numpy as np
 import os
 import docx
 from docx import Document
+from docx.shared import Cm
 import shutil
 from time import *
 
@@ -36,7 +37,7 @@ class MainEpsolApp (QtWidgets.QMainWindow):
         self.availableMenu = False
         self.availableView = False
         self.availableCustomized = False
-
+        self.doc_nombre = datetime.now().strftime('Reporte_generado__%H_%M_%d_%m_%Y.docx')
         
         #Variable que almacenará los archivos a utilizar en el programa
         self.files = None        
@@ -135,16 +136,17 @@ class MainEpsolApp (QtWidgets.QMainWindow):
             else:  
                 for f in lstFiles:            
                     try:
-                        doc = docx.Document(path+'\\'+'test.docx')
-                        doc.add_picture(str(path+'\\'+f))
-                        doc.save(path+'\\'+'test.docx')
+                        
+                        doc = docx.Document(path+'\\'+ str(self.doc_nombre))
+                        doc.add_picture(str(path+'\\'+f), width=Cm(16))
+                        doc.save(path+'\\'+str(self.doc_nombre))
                     except Exception as e: 
                         print(e,"Generando archivo .docx")            
                         document = Document()
-                        document.save(path+'\\'+'test.docx')
-                        doc = docx.Document(path+'\\'+'test.docx')
-                        doc.add_picture(str(path+'\\'+f))
-                        doc.save(path+'\\'+'test.docx') 
+                        document.save(path+'\\'+str(self.doc_nombre))
+                        doc = docx.Document(path+'\\'+str(self.doc_nombre))
+                        doc.add_picture(str(path+'\\'+f), width=Cm(16))
+                        doc.save(path+'\\'+str(self.doc_nombre)) 
                 nota = "Descarga de reporte WORD completa" 
                 self.information(anuncio=nota)
 

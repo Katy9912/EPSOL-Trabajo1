@@ -55,13 +55,14 @@ class GraphicsView (QtWidgets.QMainWindow):
     def setData(self,datos):
         self.info = datos
     #Metodo que obtiene el nombre de la categoria que se graficara (Nombre del boton)
-    def setName(self,name, label_title):
+    def setName(self,name, label_title, month):
         self.key = name
         self.label = label_title
+        self.month_selected = month
 
     #Metodo que genera la grafica
     def plotitem(self):
-        plot_name = self.data.plot(dataframe=self.info, key=self.key, label_title=self.label)
+        plot_name = self.data.plot(dataframe=self.info, key=self.key, label_title=self.label, month_used=self.month_selected)
         self.parent.parent.setFiles(files=plot_name) #Este método almacena una lista de los archivos html generados
         plot_file = os.path.join("file:///" + self.init_dir, plot_name)
         self.web.load(QUrl(plot_file))

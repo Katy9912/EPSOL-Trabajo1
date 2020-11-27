@@ -223,9 +223,9 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         self.custom = GraphicsComparison(parent=self)
         if self.filtered is None:
             #Se pasa el dataframe generado para graficar
-            self.custom.setData(data=self.info)
+            self.custom.setData(data=self.info, month_used=self.ui.months_list.currentText())
         else:
-            self.custom.setData(data=self.filtered)
+            self.custom.setData(data=self.filtered,  month_used=self.ui.months_list.currentText())
         self.custom.createList()
         self.custom.show()
     
@@ -237,7 +237,7 @@ class GraphicsMenu(QtWidgets.QMainWindow):
         else:
             self.view.setData(datos=self.filtered)
         #Se envia como argumento: El nombre del boton clickeado para saber qué categoria se va agraficar 
-        self.view.setName(name=self.sender().objectName(), label_title=self.sender().text())
+        self.view.setName(name=self.sender().objectName(), label_title=self.sender().text(), month=self.ui.months_list.currentText())
         
         self.view.plotitem() #Se llama al metodo que genera la grafica
         self.view.show() #Se muestra la interfaz con la visualizacion de la grafica

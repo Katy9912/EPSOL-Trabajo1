@@ -321,8 +321,6 @@ class Graphic_Data:
         dataas=self.new_gra(data)
         
         dataas_list = dataas.columns.tolist()
-        #if "PF" in dataas_list:
-        #    dataas_list.remove("PF")
 
         for c in dataas_list:
             new_list = dataas[c]
@@ -361,7 +359,7 @@ class Graphic_Data:
                      
 
     #Funcion generadora de graficas
-    def plot(self, dataframe, key, label_title):
+    def plot(self, dataframe, key, label_title, month_used):
         from bokeh.plotting import figure, output_file, save
         from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
         from bokeh.io import output_notebook, show
@@ -395,8 +393,8 @@ class Graphic_Data:
         #final=new_d.dropna()              #
         label= self.etiqueta(llave=key)
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-        bp = figure(width=4800, height=2000, x_axis_type="datetime", x_axis_label="Tiempo (t)", y_axis_label= str(label), toolbar_location='right',
-                    sizing_mode="stretch_both", title=label_title, tools=tools)
+        bp = figure(plot_width=1240, plot_height=600, x_axis_type="datetime", x_axis_label="Tiempo (t)", y_axis_label= str(label), toolbar_location='right',
+                    sizing_mode="fixed", title=label_title + " [" + month_used +"]", tools=tools)
         bp.title.text_font_style = 'bold'
         bp.title.align = 'center'
         bp.toolbar.autohide = True
@@ -417,16 +415,16 @@ class Graphic_Data:
 
         bp.legend.location = "top_left"
         bp.legend.click_policy = "hide"
-        plot_name = str(f'{key} -plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + ".html")   
+        plot_name = str(f'{key} -plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + " [" + month_used +"]"".html")   
 
         output_file(plot_name, title=key, mode="cdn")
         save(bp)
-        filen=str(self.path+key+'.png')
+        filen=str(self.path+key + time.strftime("%d-%m-%Y-%H-%M-%S") + " [" + month_used +"]" '.png')
         export_png(bp, filename=filen,webdriver=web_driver)
         
         return plot_name
 
-    def plotVariable(self, dataframe, variables):
+    def plotVariable(self, dataframe, variables, month):
         from bokeh.plotting import figure, output_file, save
         from bokeh.models import Range1d, HoverTool, ColumnDataSource, BoxAnnotation, Toggle
         from bokeh.io import output_notebook, show
@@ -455,8 +453,8 @@ class Graphic_Data:
             final=new_d
         
         tools = ["pan", "box_zoom", "wheel_zoom", "save", "zoom_in", "zoom_out", "crosshair", "reset"]
-        bp = figure(width=4800, height=2000,x_axis_type="datetime", x_axis_label="Tiempo (t)", toolbar_location='right',
-                    sizing_mode="stretch_both", title="Personalizado", tools=tools)
+        bp = figure(plot_width=1240, plot_height=600,x_axis_type="datetime", x_axis_label="Tiempo (t)", toolbar_location='right',
+                    sizing_mode="fixed", title="Personalizado"" [" + month + "]" , tools=tools)
         bp.title.text_font_style = 'bold'
         bp.title.align = 'center'
         bp.toolbar.autohide = True
@@ -477,11 +475,11 @@ class Graphic_Data:
 
         bp.legend.location = "top_left"
         bp.legend.click_policy = "hide"
-        plot_name = str('CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + ".html")   
+        plot_name = str('CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + " [" + month + "]" + ".html")   
         output_file(plot_name, title="customized", mode="cdn")
         save(bp)
         
-        filen=str(self.path+'CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S")+'.png') 
+        filen=str(self.path+'CUSTOMIZED-plot' + time.strftime("%d-%m-%Y-%H-%M-%S")+ " [" + month + "]" + ".png") 
         export_png(bp, filename=filen,webdriver=web_driver)
     
         return plot_name         
