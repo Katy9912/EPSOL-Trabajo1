@@ -17,7 +17,7 @@ import shutil
 from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
 options.add_argument('--headless')
-web_driver=Chrome(executable_path='C:\\chromedriver.exe',options=options)
+web_driver=Chrome(executable_path='C:\\EPSOL_APP\\chromedriver.exe',options=options)
 
 
     
