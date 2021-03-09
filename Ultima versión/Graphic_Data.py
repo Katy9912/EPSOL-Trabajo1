@@ -16,8 +16,8 @@ import shutil
 #Libreria para exportar png de grafica
 from selenium.webdriver import Chrome, ChromeOptions
 options=ChromeOptions()
-options.add_argument('--headless')
-web_driver=Chrome(executable_path=r'C:\Users\nboni\OneDrive\Documents\GitHub\EPSOL-Trabajo1\Ultima versión\chromedriver.exe',options=options)
+#options.add_argument('--headless')
+#web_driver=Chrome(executable_path=r'C:\Users\nboni\OneDrive\Documents\GitHub\EPSOL-Trabajo1\Ultima versión\chromedriver.exe',options=options)
 
 
     
@@ -417,10 +417,10 @@ class Graphic_Data:
         bp.legend.click_policy = "hide"
         plot_name = str(f'{key} -plot' + time.strftime("%d-%m-%Y-%H-%M-%S") + " [" + month_used +"]"".html")   
 
-        output_file(plot_name, title=key, mode="cdn")
-        save(bp)
-        filen=str(self.path+key + time.strftime("%d-%m-%Y-%H-%M-%S") + " [" + month_used +"]" '.png')
-        export_png(bp, filename=filen,webdriver=web_driver)
+        #output_file(plot_name, title=key, mode="cdn")
+        #save(bp)
+        #filen=str(self.path+key + time.strftime("%d-%m-%Y-%H-%M-%S") + " [" + month_used +"]" '.png')
+        #export_png(bp, filename=filen,webdriver=web_driver)
         
         return plot_name
 
